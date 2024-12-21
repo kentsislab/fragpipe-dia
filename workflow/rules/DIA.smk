@@ -12,8 +12,6 @@ rule create_manifest:
     output:
         manifest= expand(os.path.join(config["workflow_dir"],
             "{sample}.fp-manifest"), sample=samples),
-        symlink_dir= expand(directory(os.path.join(out_dir,
-            "{sample}","temp")), sample=samples)
     resources:
         mem_mb = 4000,
         time = 20,
