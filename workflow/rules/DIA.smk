@@ -44,17 +44,18 @@ rule add_decoys_contams:
         proteome = os.path.join(out_dir, "{sample}", "PG2_permissive",
             "decoys-contam-proteome.fasta.fas")
     params:
-        philosopher="/fragpipe_bin/fragPipe-22.0/fragpipe/tools/Philosopher/philosopher-v5.1.1"
+        philosopher="/fragpipe_bin/fragPipe-22.0/fragpipe/tools/Philosopher/philosopher-v5.1.1",
+        tmpdir=os.path.join(out_dir, "{sample}", "PG2_permissive")
     resources:
         mem_mb = 8000,
         time = 20,
     threads: 1,
     container:
         "/data1/shahs3/users/preskaa/singularity/fragpipe_22.0.sif"
-    envvars: ["TMPDIR", "PATH"]
     shell:
         """
         bash -c "
+        export TMPDIR={params.tmpdir} &&
         {params.philosopher} workspace --init --nocheck &&
         {params.philosopher} database --custom {input.proteome} --contam --contamprefix &&
         {params.philosopher} workspace --clean --nocheck &&
