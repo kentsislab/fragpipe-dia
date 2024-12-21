@@ -48,15 +48,15 @@ index_table=${outdir}/fasta_header_index.tsv
 # fix headers
 # need to activate for mono
 source activate /data1/kentsisa/fragpipe_ondemand/fragpipe_env
-#python /home/preskaa/fragpipe-smk/workflow/scripts/fix_pg2_headers.py ${proteome} ${PG2_proteome} ${index_table}
-#
-## add decoys and contaminants
-#singularity exec -e -B /data1/shahs3:/data1/shahs3 \
-#  -B /data1/kentsisa:/data1/kentsisa ${sif_path} bash -c "
-#  ${philosopher} workspace --init --nocheck &&
-#  ${philosopher} database --custom ${PG2_proteome} --contam --contamprefix &&
-#  ${philosopher} workspace --clean --nocheck
-#"
+python /home/preskaa/fragpipe-smk/workflow/scripts/fix_pg2_headers.py ${proteome} ${PG2_proteome} ${index_table}
+
+# add decoys and contaminants
+singularity exec -e -B /data1/shahs3:/data1/shahs3 \
+  -B /data1/kentsisa:/data1/kentsisa ${sif_path} bash -c "
+  ${philosopher} workspace --init --nocheck &&
+  ${philosopher} database --custom ${PG2_proteome} --contam --contamprefix &&
+  ${philosopher} workspace --clean --nocheck
+"
 
 # this command launches fragpipe
 # if you want to do a "dry-run", which just tests if everything is set-up properly

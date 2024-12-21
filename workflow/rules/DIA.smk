@@ -20,3 +20,15 @@ rule create_manifest:
     script:
         "../scripts/write_dia_manifest.py"
 
+# fix PG2 headers for fragpipe analysis
+rule fix_PG2_headers:
+    input:
+        proteome = os.path.join(PG2_dir, sample, "experiment/combined.proteome.unique.fasta")
+    output:
+        proteome = os.path.join(outdir, sample, "proteome.fasta"),
+        index_table = os.path.join(outdir, sample, "fasta_header_index.tsv")
+    singularity:
+        "docker://quay.io/preskaa/proteomics:v240915"
+    script:
+        "../scripts/fix_pg2_headers.py"
+
