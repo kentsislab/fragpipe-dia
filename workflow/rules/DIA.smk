@@ -41,7 +41,8 @@ rule add_decoys_contams:
     input:
         proteome = os.path.join(out_dir,"{sample}","PG2_permissive","proteome.fasta")
     output:
-        proteome = os.path.join(out_dir, "{sample}", "PG2_permissive", date + "-decoys-contam-proteome.fasta.fas")
+        proteome = os.path.join(out_dir, "{sample}", "PG2_permissive",
+            today_date + "-decoys-contam-proteome.fasta.fas")
     params:
         philosopher="/fragpipe_bin/fragPipe-22.0/fragpipe/tools/Philosopher/philosopher-v5.1.1"
     resources:
