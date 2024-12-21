@@ -27,6 +27,9 @@ rule fix_PG2_headers:
     output:
         proteome = os.path.join(out_dir, "{sample}", "proteome.fasta"),
         index_table = os.path.join(out_dir, "{sample}", "fasta_header_index.tsv")
+    resources:
+        mem_mb = 4000,
+        time = 20,
     singularity:
         "docker://quay.io/preskaa/proteomics:v240915"
     script:
