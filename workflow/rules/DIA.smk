@@ -53,9 +53,9 @@ rule add_decoys_contams:
         "/data1/shahs3/users/preskaa/singularity/fragpipe_22.0.sif"
     shell:
         """
-    {params.philosopher} workspace --init --nocheck
-    {params.philosopher} database --custom {input.proteome} --contam --contamprefix
-    {params.philosopher} workspace --clean --nocheck
+    {params.philosopher} workspace --init --nocheck &&
+    {params.philosopher} database --custom {input.proteome} --contam --contamprefix &&
+    {params.philosopher} workspace --clean --nocheck &&
     *-decoys-contam-proteome.fasta.fas > {output.proteome}
         """
 
