@@ -5,7 +5,7 @@ samplesheet=config["samplesheet"]
 out_dir = config["out_dir"]
 workflow_dir = config["workflow_dir"]
 PG2_dir = config["PG2_dir"]
-date = config["date"]
+today_date = config["today_date"]
 
 # create sample list
 def create_sample_list(samplesheet):
