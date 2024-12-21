@@ -49,16 +49,19 @@ rule add_decoys_contams:
         mem_mb = 8000,
         time = 20,
     threads: 1,
-    singularity:
+    container:
         "/data1/shahs3/users/preskaa/singularity/fragpipe_22.0.sif"
+    envvars: ["TMPDIR", "PATH"]
     shell:
         """
-    {params.philosopher} workspace --clean --nocheck &&
-    {params.philosopher} workspace --init --nocheck &&
-    {params.philosopher} database --custom {input.proteome} --contam --contamprefix &&
-    {params.philosopher} workspace --clean --nocheck &&
-    *-decoys-contam-proteome.fasta.fas > {output.proteome}
+        bash -c "
+        {params.philosopher} workspace --init --nocheck &&
+        {params.philosopher} database --custom {input.proteome} --contam --contamprefix &&
+        {params.philosopher} workspace --clean --nocheck &&
+        mv *-decoys-contam-proteome.fasta.fas {output.proteome}
+        "
         """
+
 
 
 
