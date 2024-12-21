@@ -1,7 +1,5 @@
 import pandas as pd
 
-from workflow.scripts.write_dia_manifest import workflow_dir
-
 # inputs
 samplesheet=config["samplesheet"]
 out_dir = config["out_dir"]
