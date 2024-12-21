@@ -21,7 +21,6 @@ def get_output():
         "{sample}.fp-manifest"), sample=samples)
     target2 = expand(os.path.join(out_dir, "{sample}", "PG2_permissive","proteome.fasta"),
         sample=samples)
-    if config["decoys"][]
     target3 = expand(os.path.join(out_dir, "{sample}",
         "PG2_permissive", "decoys-contam-proteome.fasta.fas"),
     sample=samples)
