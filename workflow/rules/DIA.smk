@@ -19,3 +19,4 @@ rule create_manifest:
         "docker://quay.io/preskaa/proteomics:v240915"
     script:
         "../scripts/write_dia_manifest.py"
+

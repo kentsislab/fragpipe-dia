@@ -1,4 +1,4 @@
 ### boiler plate config
-out_dir: /data1/shahs3/users/preskaa/AMLproteogenomics/data/APS028_AML_PG2_analysis
+out_dir: /data1/shahs3/users/preskaa/AMLproteogenomics/data/APS028_AML_PG2_analysis/fragpipe_out
 workflow_dir: /data1/shahs3/users/preskaa/AMLproteogenomics/data/APS028_AML_PG2_analysis/fragpipe_workflows
 samplesheet: config/PG2_Frankfurt_AML_proteomics.tsv
