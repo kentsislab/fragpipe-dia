@@ -1,0 +1,26 @@
+from snakemake.utils import min_version
+
+##### set minimum snakemake version #####
+min_version("7.31.1")
+
+# this doesn't work; hence why it is commented out
+# this container defines the underlying OS for each job when using the workflow
+# with --use-conda --use-singularity
+
+# container: "docker://continuumio/miniconda3"
+
+## set a base singularity container for rules with very simple jobs
+## this would be fine except for running fragpipe, which cannot be fully containerized
+# singularity: "docker://quay.io/preskaa/proteomics:v240915"
+
+
+##### load rules #####
+
+include: "rules/common.smk"
+include: "rules/DIA.smk"
+
+### target_rules ####
+rule all:
+    input:
+        get_output(),
+    default_target: True
