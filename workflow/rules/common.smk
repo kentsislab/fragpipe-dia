@@ -5,6 +5,7 @@ samplesheet=config["samplesheet"]
 out_dir = config["out_dir"]
 workflow_dir = config["workflow_dir"]
 PG2_dir = config["PG2_dir"]
+date = config["date"]
 
 # create sample list
 def create_sample_list(samplesheet):
@@ -21,6 +22,10 @@ def get_output():
         "{sample}.fp-manifest"), sample=samples)
     target2 = expand(os.path.join(out_dir, "{sample}", "PG2_permissive","proteome.fasta"),
         sample=samples)
+    target3 = expand(os.path.join(out_dir, "{sample}",
+        "PG2_permissive", date + "-decoys-contam-proteome.fasta.fas"),
+    sample=samples)
     output.extend(target1)
     output.extend(target2)
+    output.extend(target3)
     return output

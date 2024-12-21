@@ -30,8 +30,34 @@ rule fix_PG2_headers:
     resources:
         mem_mb = 4000,
         time = 20,
+    threads: 1,
     singularity:
         "docker://quay.io/preskaa/proteomics:v240915"
     script:
         "../scripts/fix_pg2_headers.py"
+
+# add decoys and contaminants to
+rule add_decoys_contams:
+    input:
+        proteome = os.path.join(out_dir,"{sample}","PG2_permissive","proteome.fasta")
+    output:
+        proteome = os.path.join(out_dir, "{sample}", "PG2_permissive", date + "-decoys-contam-proteome.fasta.fas")
+    params:
+        philosopher="/fragpipe_bin/fragPipe-22.0/fragpipe/tools/Philosopher/philosopher-v5.1.1"
+    resources:
+        mem_mb = 8000,
+        time = 20,
+    threads: 1,
+    singularity:
+        "/data1/shahs3/users/preskaa/singularity/fragpipe_22.0.sif"
+    shell:
+        """
+    {params.philosopher} workspace --init --nocheck
+    {params.philosopher} database --custom {input.proteome} --contam --contamprefix
+    {params.philosopher} workspace --clean --nocheck
+        """
+
+
+
+
 
