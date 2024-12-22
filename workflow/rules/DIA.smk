@@ -1,20 +1,33 @@
 from datetime import datetime
 
+from workflow.scripts.write_dia_manifest import directory
+
 """
 rules for running Fragpipe's DIA_SpecLib_Quant workflow
 """
+localrules: create_manifest
+
+def _get_diafilepath(wildcards):
+    df = pd.read_csv(samplesheet,sep="\t")
+    # get path for sample
+    temp = df[df["individual_id"] == wildcards.sample]
+    directory = list(temp["directory"])[0]
+    DIA_file = list(temp["DIA_file"])[0]
+    _, DIA_file = DIA_file.split(" ")
+    return os.path.join(directory, DIA_file)
 
 # create manifest and a temp directory for fragpipe
 rule create_manifest:
     input:
-        samplesheet=samplesheet
-    params:
-        workflow_dir=workflow_dir,
-        out_dir=out_dir,
-        condition="PG2_permissive"
+        dia_filepath=_get_diafilepath
     output:
-        manifest= expand(os.path.join(workflow_dir, "PG2_permissive",
-            "{sample}.fp-manifest"), sample=samples),
+        manifest = os.path.join(workflow_dir, "PG2_permissive",
+            "{sample}.fp-manifest"),
+        symlink = os.path.join(out_dir, "{sample}",
+            "PG2_permissive", "temp", "{sample}.raw")
+    params:
+        symlink_dir = os.path.join(out_dir, "{sample}",
+            "PG2_permissive", "temp")
     resources:
         mem_mb = 4000,
         time = 20,
