@@ -24,7 +24,11 @@ def get_output():
     target3 = expand(os.path.join(out_dir, "{sample}",
         "PG2_permissive", "decoys-contam-proteome.fasta.fas"),
     sample=samples)
+    target4 = expand(os.path.join(workflow_dir, "PG2_permissive",
+            "{sample}.workflow"),
+        sample=samples)
     output.extend(target1)
     output.extend(target2)
     output.extend(target3)
+    output.extend(target4)
     return output

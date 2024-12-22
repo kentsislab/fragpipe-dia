@@ -2,7 +2,7 @@
 out_dir: /data1/shahs3/users/preskaa/AMLproteogenomics/data/APS028_AML_PG2_analysis/fragpipe_out
 workflow_dir: /data1/shahs3/users/preskaa/AMLproteogenomics/data/APS028_AML_PG2_analysis/fragpipe_workflows
 samplesheet: config/PG2_Frankfurt_AML_proteomics.tsv
-# directory containing predicted proteomes from PG2 for each patient
+# directory containing predicted proteomes from "permissive" PG2 for each patient
 PG2_dir: /data1/kentsisa/AML_proteogenomics/Proj_B-101-985
 # today's date if you need to generate decoys/contaminants for protein database with philosopher
 today_date: 2024-12-21
