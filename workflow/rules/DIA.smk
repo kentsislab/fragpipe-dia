@@ -48,7 +48,7 @@ rule add_decoys_contams:
         tmpdir=os.path.join(out_dir, "{sample}", "PG2_permissive")
     resources:
         mem_mb = 8000,
-        time = 20,
+        time = 60,
     threads: 1,
     container:
         "/data1/shahs3/users/preskaa/singularity/fragpipe_22.0.sif"
