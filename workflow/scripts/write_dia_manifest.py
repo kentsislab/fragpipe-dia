@@ -31,6 +31,6 @@ for _, row in df.iterrows():
     # symlink
     os.symlink(DIA_filepath, symlink_path)
     # generate manifest
-    manifest_path = os.path.join(workflow_dir, sample + ".fp-manifest")
+    manifest_path = os.path.join(workflow_dir, condition, sample + ".fp-manifest")
     manifest = pd.DataFrame(zip([symlink_path], ["DIA"]))
     manifest.to_csv(manifest_path, sep="\t", index=None, header=None)

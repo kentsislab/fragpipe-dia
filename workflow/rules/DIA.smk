@@ -1,4 +1,7 @@
 from datetime import datetime
+
+from workflow.scripts.write_dia_manifest import workflow_dir
+
 """
 rules for running Fragpipe's DIA_SpecLib_Quant workflow
 """
@@ -8,7 +11,7 @@ rule create_manifest:
     input:
         samplesheet=samplesheet
     params:
-        workflow_dir=config["workflow_dir"],
+        workflow_dir=workflow_dir,
         out_dir=out_dir,
         condition="PG2_permissive"
     output:
