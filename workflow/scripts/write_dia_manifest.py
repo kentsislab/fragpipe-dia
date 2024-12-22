@@ -3,6 +3,7 @@ import os
 
 ## create a temp directory for fragpipe
 DIA_filepath=snakemake.input["dia_filepath"]
+symlink_dir=snakemake.params["symlink_dir"]
 manifest_path = snakemake.output["manifest"]
 symlink_path = snakemake.output["symlink"]
 # make symlink directory if it doesn't exist
