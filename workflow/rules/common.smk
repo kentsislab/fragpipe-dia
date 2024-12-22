@@ -17,9 +17,11 @@ samples = create_sample_list(samplesheet)
 # get outputs
 def get_output():
     output = []
-    target1 = expand(os.path.join(workflow_dir,
+    # permissive PG2 rules
+    target1 = expand(os.path.join(workflow_dir, "PG2_permissive",
         "{sample}.fp-manifest"), sample=samples)
-    target2 = expand(os.path.join(out_dir, "{sample}", "PG2_permissive","proteome.fasta"),
+    target2 = expand(os.path.join(out_dir, "{sample}",
+        "PG2_permissive","proteome.fasta"),
         sample=samples)
     target3 = expand(os.path.join(out_dir, "{sample}",
         "PG2_permissive", "decoys-contam-proteome.fasta.fas"),
