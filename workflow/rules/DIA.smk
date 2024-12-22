@@ -94,12 +94,14 @@ rule create_workflow:
     script:
         "../scripts/write_dia_workflow.py"
 
+# run fragpipe -- will need to fix by using a container that has the mono
+# package
 rule run_fragpipe:
     input:
         workflow = os.path.join(workflow_dir, "PG2_permissive",
             "{sample}.workflow"),
-        manifest= expand(os.path.join(workflow_dir, "PG2_permissive",
-            "{sample}.fp-manifest"), sample=samples),
+        manifest= os.path.join(workflow_dir, "PG2_permissive",
+            "{sample}.fp-manifest"),
     output:
         protein_tsv = os.path.join(out_dir,"{sample}","PG2_permissive",
             "protein.tsv")
@@ -110,6 +112,8 @@ rule run_fragpipe:
     resources:
         mem_mb = 50000,
         time = 360
+    container:
+        "docker://quay.io/biocontainers/mono:4.6.2.6--0"
     script:
         "../scripts/run_fragpipe.sh"
 
