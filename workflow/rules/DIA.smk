@@ -1,7 +1,5 @@
 from datetime import datetime
 
-from workflow.scripts.write_dia_manifest import directory
-
 """
 rules for running Fragpipe's DIA_SpecLib_Quant workflow
 """
