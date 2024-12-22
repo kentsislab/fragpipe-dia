@@ -112,8 +112,8 @@ rule run_fragpipe:
     resources:
         mem_mb = 50000,
         time = 360
-    container:
-        "docker://quay.io/biocontainers/mono:4.6.2.6--0"
+    conda:
+        "/data1/kentsisa/fragpipe_ondemand/fragpipe_env"
     script:
         "../scripts/run_fragpipe.sh"
 
