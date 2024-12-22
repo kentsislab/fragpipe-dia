@@ -51,7 +51,7 @@ rule add_decoys_contams:
         date = datetime.today().strftime('%Y-%m-%d')
     resources:
         mem_mb = 8000,
-        time = 60,
+        time = 120,
     threads: 1,
     container:
         "/data1/shahs3/users/preskaa/container/fragpipe_22.0.sif"
