@@ -1,7 +1,5 @@
 from datetime import datetime
 
-from workflow.scripts.write_dia_manifest import workflow_dir
-
 """
 rules for running Fragpipe's DIA_SpecLib_Quant workflow
 """
@@ -57,7 +55,7 @@ rule add_decoys_contams:
         time = 120,
     threads: 1,
     container:
-        "/data1/shahs3/users/preskaa/container/fragpipe_22.0.sif"
+        "/data1/shahs3/users/preskaa/singularity/fragpipe_22.0.sif"
     shell:
         """
         cd {params.tmpdir} &&
