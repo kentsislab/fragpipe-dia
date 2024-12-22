@@ -29,8 +29,12 @@ def get_output():
     target4 = expand(os.path.join(workflow_dir, "PG2_permissive",
             "{sample}.workflow"),
         sample=samples)
+    # target5 = expand(os.path.join(out_dir,"{sample}","PG2_permissive",
+    #         "protein.tsv"),
+    #     sample=samples)
     output.extend(target1)
     output.extend(target2)
     output.extend(target3)
     output.extend(target4)
+    # output.extend(target5)
     return output

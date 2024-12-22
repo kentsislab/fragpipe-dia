@@ -21,7 +21,7 @@ for _, row in df.iterrows():
     directory = row["directory"]
     DIA_file = row["DIA_file"]
     # make symlink directory if it doesn't exist
-    symlink_dir = os.path.join(out_dir, condition, sample, "temp")
+    symlink_dir = os.path.join(out_dir, sample, condition, "temp")
     os.makedirs(symlink_dir, exist_ok=True)
     # get path to original file
     _, DIA_file = DIA_file.split(" ")

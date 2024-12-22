@@ -83,6 +83,25 @@ rule create_workflow:
     script:
         "../scripts/write_dia_workflow.py"
 
+rule run_fragpipe:
+    input:
+        workflow = os.path.join(workflow_dir, "PG2_permissive",
+            "{sample}.workflow"),
+        manifest= expand(os.path.join(workflow_dir, "PG2_permissive",
+            "{sample}.fp-manifest"), sample=samples),
+    output:
+        protein_tsv = os.path.join(out_dir,"{sample}","PG2_permissive",
+            "protein.tsv")
+    params:
+        outdir=os.path.join(out_dir,"{sample}","PG2_permissive"),
+        memory=45 # in GB
+    threads: 4,
+    resources:
+        mem_mb = 50000,
+        time = 360
+    script:
+        "../scripts/run_fragpipe.sh"
+
 
 
 

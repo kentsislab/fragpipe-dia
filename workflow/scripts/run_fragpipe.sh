@@ -1,56 +1,26 @@
 #!/bin/bash
-### example slurm submission script ###
+
 # remove any modules that were loaded previously
 module purge
-# this tells the cluster to load fragpipe and java modules
+# load fragpipe
 module load fragpipe/22.0
 module load java/20.0.1
 #####
-# provide the paths to your workflow and manifest here
-workflow=/data1/shahs3/users/preskaa/AMLproteogenomics/data/APS028_AML_PG2_analysis/fragpipe_workflows/F1_trypsin_lysc_DIA.workflow
-manifest=/data1/shahs3/users/preskaa/AMLproteogenomics/data/APS028_AML_PG2_analysis/fragpipe_workflows/F1.fp-manifest
-# provide paths to fragpipe config tools, python and diann
-config_tools=/data1/kentsisa/fragpipe_ondemand/fragpipe_config_tools
-config_python=/data1/kentsisa/fragpipe_ondemand/fragpipe_env/bin/python3.9
+workflow=${snakemake_input[workflow]}
+manifest=${snakemake_input[manifest]}
+config_tools=/home/preskaa/fragpipe_config_tools
+outdir=${snakemake_params[outdir]}
+config_python=/home/preskaa/miniconda3/envs/fragpipe/bin/python3.9
 config_diann=/admin/software/fragpipe/fragpipe-22.0/tools/diann/1.8.2_beta_8/linux/diann-1.8.1.8
-# provide out directory
-outdir=/data1/shahs3/users/preskaa/AMLproteogenomics/data/APS028_AML_PG2_analysis/fragpipe_out
-# tell fragpipe itself what resources are available
-# set this to the number of "cpu-tasks" set above
-threads=4
-# for memory, I would recommend setting this at slightly lower than what we have told slurm we need
-# e.g., if you set SLURM to 120 GB, I would set this to 100
-memory=45 #in GB
+threads=${snakemake[threads]}
+memory=${snakemake_params[memory]} #in GB
 ########
-# this creates the out directory and moves to this out directory
 mkdir -p ${outdir}
 cd ${outdir}
-## make outdir for dia-nn as this appeared to be the issue before ....
+# make outdir for dia-nn as this appeared to be the issue before ....
 mkdir -p ${outdir}/diann-output
 
-# fix PG2 headers and add decoys and contaminants
-sif_path=/data1/shahs3/users/preskaa/singularity/fragpipe_22.0.sif
-philosopher=/fragpipe_bin/fragPipe-22.0/fragpipe/tools/Philosopher/philosopher-v5.1.1
-proteome=/data1/kentsisa/AML_proteogenomics/Proj_B-101-985/F1/experiment/combined.proteome.unique.fasta
-PG2_proteome=${outdir}/proteome.fasta
-index_table=${outdir}/fasta_header_index.tsv
-
-# fix headers
-# need to activate for mono
-source activate /data1/kentsisa/fragpipe_ondemand/fragpipe_env
-python /home/preskaa/fragpipe-smk/workflow/scripts/fix_pg2_headers.py ${proteome} ${PG2_proteome} ${index_table}
-
-# add decoys and contaminants
-singularity exec -e -B /data1/shahs3:/data1/shahs3 \
-  -B /data1/kentsisa:/data1/kentsisa ${sif_path} bash -c "
-  ${philosopher} workspace --init --nocheck &&
-  ${philosopher} database --custom ${PG2_proteome} --contam --contamprefix &&
-  ${philosopher} workspace --clean --nocheck
-"
-
-# this command launches fragpipe
-# if you want to do a "dry-run", which just tests if everything is set-up properly
-# before you launch the actual job, uncomment the dry-run option below
+#########
 fragpipe --headless \
   --workflow ${workflow} \
   --manifest ${manifest} \
@@ -59,5 +29,5 @@ fragpipe --headless \
   --threads ${threads} \
   --config-diann ${config_diann} \
   --config-python ${config_python} \
-  --ram ${memory} \
+  --ram ${memory}
 #  --dry-run
