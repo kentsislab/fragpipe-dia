@@ -3,7 +3,7 @@ from datetime import datetime
 """
 rules for running Fragpipe's DIA_SpecLib_Quant workflow
 """
-localrules: create_manifest
+localrules: create_manifest, create_workflow
 
 def _get_diafilepath(wildcards):
     df = pd.read_csv(samplesheet,sep="\t")
@@ -112,8 +112,6 @@ rule run_fragpipe:
     resources:
         mem_mb = 50000,
         time = 360
-    conda:
-        "/data1/kentsisa/fragpipe_ondemand/fragpipe_env"
     script:
         "../scripts/run_fragpipe.sh"
 
