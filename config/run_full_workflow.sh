@@ -22,8 +22,6 @@ snakefile=${pipeline_dir}/workflow/Snakefile
 ## switch to the right conda environment
 source /home/preskaa/miniconda3/bin/activate snakemake
 
-mkdir -p ${outdir}
-
 ### run the pipeline
 echo "Current working directory: $(pwd)"
 echo "Snakefile path: ${snakefile}"
@@ -41,7 +39,7 @@ snakemake \
   --conda-prefix /data1/shahs3/users/preskaa/conda \
   --singularity-prefix /data1/shahs3/users/preskaa/singularity \
   --singularity-args "--bind /data1/shahs3 --bind /data1/kentsisa" \
-  --dry-run
+#  --dry-run
 
 
 
