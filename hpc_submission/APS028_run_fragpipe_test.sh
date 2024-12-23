@@ -17,8 +17,9 @@ module load fragpipe/22.0
 module load java/20.0.1
 #####
 # provide the paths to your workflow and manifest here
-workflow=/data1/shahs3/users/preskaa/AMLproteogenomics/data/APS028_AML_PG2_analysis/fragpipe_workflows/F1_trypsin_lysc_DIA.workflow
-manifest=/data1/shahs3/users/preskaa/AMLproteogenomics/data/APS028_AML_PG2_analysis/fragpipe_workflows/F1.fp-manifest
+workflow_dir=/data1/shahs3/users/preskaa/AMLproteogenomics/data/APS028_AML_PG2_analysis/fragpipe_workflows/PG2_permissive
+workflow=${workflow_dir}/F9.workflow
+manifest=${workflow_dir}/F9.fp-manifest
 # provide paths to fragpipe config tools, python and diann
 config_tools=/data1/kentsisa/fragpipe_ondemand/fragpipe_config_tools
 config_python=/data1/kentsisa/fragpipe_ondemand/fragpipe_env/bin/python3.9
