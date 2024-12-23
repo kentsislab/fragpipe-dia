@@ -20,6 +20,8 @@ mkdir -p ${outdir}
 cd ${outdir}
 # make outdir for dia-nn as this appeared to be the issue before ....
 mkdir -p ${outdir}/diann-output
+# need to activate for mono
+source activate /data1/kentsisa/fragpipe_ondemand/fragpipe_env
 #########
 fragpipe --headless \
   --workflow ${workflow} \

@@ -112,8 +112,6 @@ rule run_fragpipe:
     resources:
         mem_mb = 50000,
         time = 360
-    conda:
-        "/data1/kentsisa/fragpipe_ondemand/fragpipe_env"
     script:
         "../scripts/run_fragpipe.sh"
 
