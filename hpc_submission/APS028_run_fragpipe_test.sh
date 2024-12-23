@@ -61,9 +61,11 @@ source activate /data1/kentsisa/fragpipe_ondemand/fragpipe_env
 # this command launches fragpipe
 # if you want to do a "dry-run", which just tests if everything is set-up properly
 # before you launch the actual job, uncomment the dry-run option below
+fragpipe=/fragpipe_bin/fragPipe-22.0/fragpipe/bin/fragpipe
+
  singularity exec -e -B /data1/shahs3:/data1/shahs3 \
    -B /data1/kentsisa:/data1/kentsisa ${sif_path} bash -c "
-fragpipe --headless \
+${fragpipe} --headless \
   --workflow ${workflow} \
   --manifest ${manifest} \
   --config-tools-folder ${config_tools} \
