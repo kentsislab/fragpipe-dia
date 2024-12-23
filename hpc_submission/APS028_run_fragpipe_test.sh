@@ -64,7 +64,8 @@ source activate /data1/kentsisa/fragpipe_ondemand/fragpipe_env
 fragpipe=/fragpipe_bin/fragPipe-22.0/fragpipe/bin/fragpipe
 
  singularity exec -e -B /data1/shahs3:/data1/shahs3 \
-   -B /data1/kentsisa:/data1/kentsisa ${sif_path} bash -c "
+   -B /data1/kentsisa:/data1/kentsisa \
+   -B /admin/software:/admin/software ${sif_path} bash -c "
 ${fragpipe} --headless \
   --workflow ${workflow} \
   --manifest ${manifest} \
