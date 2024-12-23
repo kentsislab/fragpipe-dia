@@ -10,6 +10,7 @@ symlink_path = snakemake.output["symlink"]
 os.makedirs(symlink_dir, exist_ok=True)
 # symlink
 os.symlink(DIA_filepath, symlink_path)
-manifest = pd.DataFrame(zip([symlink_path], ["DIA"]))
-manifest.to_csv(manifest_path, sep="\t", index=None, header=None)
+with open(manifest_path, "w+") as f:
+    line = f"{symlink_path}			DIA"
+    f.write(line)
 
