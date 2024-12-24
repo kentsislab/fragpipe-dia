@@ -101,8 +101,8 @@ rule run_fragpipe:
             "{sample}.workflow"),
         manifest= os.path.join(workflow_dir, "PG2_permissive",
             "{sample}.fp-manifest"),
-        hardlink= temp(os.path.join(out_dir,"{sample}",
-            "PG2_permissive","temp","{sample}.raw"))
+        hardlink= os.path.join(out_dir,"{sample}",
+            "PG2_permissive","temp","{sample}.raw")
     output:
         protein_tsv = os.path.join(out_dir,"{sample}","PG2_permissive",
             "protein.tsv")
