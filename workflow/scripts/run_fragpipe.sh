@@ -1,10 +1,4 @@
 #!/bin/bash
-
-# remove any modules that were loaded previously
-module purge
-# load fragpipe
-module load fragpipe/22.0
-module load java/20.0.1
 #####
 workflow=${snakemake_input[workflow]}
 manifest=${snakemake_input[manifest]}
@@ -12,18 +6,17 @@ outdir=${snakemake_params[outdir]}
 threads=${snakemake[threads]}
 memory=${snakemake_params[memory]} #in GB
 # fragpipe config tools
-config_tools=/data1/kentsisa/fragpipe_ondemand/fragpipe_config_tools
-config_python=/data1/kentsisa/fragpipe_ondemand/fragpipe_env/bin/python3.9
-config_diann=/admin/software/fragpipe/fragpipe-22.0/tools/diann/1.8.2_beta_8/linux/diann-1.8.1.8
+fragpipe=/fragpipe_bin/fragPipe-22.0/fragpipe/bin/fragpipe
+config_tools=/fragpipe_bin/fragpipe_config_tools
+config_python=/usr/bin/python3.10
+config_diann=/fragpipe_bin/diann-1.9.1/diann-linux
 ########
 mkdir -p ${outdir}
 cd ${outdir}
 # make outdir for dia-nn as this appeared to be the issue before ....
 mkdir -p ${outdir}/diann-output
-# need to activate for mono
-source activate /data1/kentsisa/fragpipe_ondemand/fragpipe_env
 #########
-fragpipe --headless \
+${fragpipe} --headless \
   --workflow ${workflow} \
   --manifest ${manifest} \
   --config-tools-folder ${config_tools} \

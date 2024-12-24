@@ -21,8 +21,8 @@ rule create_manifest:
     output:
         manifest = os.path.join(workflow_dir, "PG2_permissive",
             "{sample}.fp-manifest"),
-        symlink = os.path.join(out_dir, "{sample}",
-            "PG2_permissive", "temp", "{sample}.raw")
+        hardlink = temp(os.path.join(out_dir, "{sample}",
+            "PG2_permissive", "temp", "{sample}.raw"))
     params:
         symlink_dir = os.path.join(out_dir, "{sample}",
             "PG2_permissive", "temp")
@@ -94,14 +94,15 @@ rule create_workflow:
     script:
         "../scripts/write_dia_workflow.py"
 
-# run fragpipe -- will need to fix by using a container that has the mono
-# package
+# run fragpipe with our custom docker image
 rule run_fragpipe:
     input:
         workflow = os.path.join(workflow_dir, "PG2_permissive",
             "{sample}.workflow"),
         manifest= os.path.join(workflow_dir, "PG2_permissive",
             "{sample}.fp-manifest"),
+        hardlink= temp(os.path.join(out_dir,"{sample}",
+            "PG2_permissive","temp","{sample}.raw"))
     output:
         protein_tsv = os.path.join(out_dir,"{sample}","PG2_permissive",
             "protein.tsv")
@@ -112,6 +113,8 @@ rule run_fragpipe:
     resources:
         mem_mb = 50000,
         time = 360
+    container:
+        "/data1/shahs3/users/preskaa/singularity/fragpipe_22.0.sif"
     script:
         "../scripts/run_fragpipe.sh"
 
