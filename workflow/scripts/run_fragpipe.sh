@@ -5,6 +5,7 @@ manifest=${snakemake_input[manifest]}
 outdir=${snakemake_params[outdir]}
 threads=${snakemake[threads]}
 memory=${snakemake_params[memory]} #in GB
+tempdir=${snakemake_params[tempdir]}
 # fragpipe config tools
 fragpipe=/fragpipe_bin/fragPipe-22.0/fragpipe/bin/fragpipe
 config_tools=/fragpipe_bin/fragpipe_config_tools
@@ -26,3 +27,5 @@ ${fragpipe} --headless \
   --config-python ${config_python} \
   --ram ${memory}
 #  --dry-run
+# remove temporary directory upon completion
+rm -r ${tempdir}

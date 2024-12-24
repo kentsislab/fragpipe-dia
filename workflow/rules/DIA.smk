@@ -22,10 +22,10 @@ rule create_manifest:
         manifest = os.path.join(workflow_dir, "PG2_permissive",
             "{sample}.fp-manifest"),
         hardlink = temp(os.path.join(out_dir, "{sample}",
-            "PG2_permissive", "temp", "{sample}.raw"))
+            "PG2_permissive", "temp", "{sample}.raw")),
     params:
-        symlink_dir = os.path.join(out_dir, "{sample}",
-            "PG2_permissive", "temp")
+        hardlink_dir= os.path.join(out_dir,"{sample}",
+            "PG2_permissive","temp")
     resources:
         mem_mb = 4000,
         time = 20,
@@ -105,10 +105,12 @@ rule run_fragpipe:
             "PG2_permissive","temp","{sample}.raw")
     output:
         protein_tsv = os.path.join(out_dir,"{sample}","PG2_permissive",
-            "protein.tsv")
+            "protein.tsv"),
     params:
         outdir=os.path.join(out_dir,"{sample}","PG2_permissive"),
-        memory=45 # in GB
+        memory=45, # in GB
+        tempdir =  os.path.join(out_dir,"{sample}",
+            "PG2_permissive","temp")
     threads: 4,
     resources:
         mem_mb = 50000,
