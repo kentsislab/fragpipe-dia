@@ -63,6 +63,10 @@ source activate /data1/kentsisa/fragpipe_ondemand/fragpipe_env
 # if you want to do a "dry-run", which just tests if everything is set-up properly
 # before you launch the actual job, uncomment the dry-run option below
 fragpipe=/fragpipe_bin/fragPipe-22.0/fragpipe/bin/fragpipe
+# provide paths to fragpipe config tools, python and diann
+config_tools=/fragpipe_bin/fragpipe_config_tools
+config_python=/usr/bin/python3.10
+config_diann=/fragpipe_bin/diann-1.9.1/diann-linux
 
  singularity exec -e -B /data1/shahs3:/data1/shahs3 \
    -B /data1/kentsisa:/data1/kentsisa \
