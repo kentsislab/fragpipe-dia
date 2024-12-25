@@ -63,7 +63,7 @@ rule add_decoys_contams:
         date = datetime.today().strftime('%Y-%m-%d')
     resources:
         mem_mb = 8000,
-        time = 120,
+        time = 360, # increased for retries default 120
     threads: 1,
     container:
         "/data1/shahs3/users/preskaa/singularity/fragpipe_22.0.sif"
@@ -114,7 +114,7 @@ rule run_fragpipe:
     threads: 4,
     resources:
         mem_mb = 50000,
-        time = 360
+        time = 1440 # increased for retries default was 360
     container:
         "/data1/shahs3/users/preskaa/singularity/fragpipe_22.0.sif"
     script:
