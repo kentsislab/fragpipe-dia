@@ -32,13 +32,13 @@ def get_output():
     target5 = expand(os.path.join(out_dir,"{sample}","PG2_permissive",
             "protein.tsv"),
         sample=samples)
-    target6 = expand(os.path.join(out_dir, "{sample}",
-            "PG2_permissive", "temp", "{sample}.raw"),
-        sample=samples)
+    # target6 = expand(os.path.join(out_dir, "{sample}",
+    #         "PG2_permissive", "temp", "{sample}.raw"),
+    #    sample=samples)
     output.extend(target1)
     output.extend(target2)
     output.extend(target3)
     output.extend(target4)
     output.extend(target5)
-    output.extend(target6)
+    # output.extend(target6)
     return output
