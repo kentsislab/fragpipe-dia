@@ -19,13 +19,13 @@ rule create_manifest:
     input:
         dia_filepath=_get_diafilepath
     output:
-        manifest = os.path.join(workflow_dir, "PG2_permissive",
+        manifest = os.path.join(workflow_dir, "{db}",
             "{sample}.fp-manifest"),
         hardlink = temp(os.path.join(out_dir, "{sample}",
-            "PG2_permissive", "temp", "{sample}.raw")),
+            "{db}", "temp", "{sample}.raw")),
     params:
         hardlink_dir= os.path.join(out_dir,"{sample}",
-            "PG2_permissive","temp")
+            "{db}","temp")
     resources:
         mem_mb = 4000,
         time = 20,
@@ -39,8 +39,8 @@ rule fix_PG2_headers:
     input:
         proteome = os.path.join(PG2_dir, "{sample}", "experiment/combined.proteome.unique.fasta")
     output:
-        proteome = os.path.join(out_dir, "{sample}", "PG2_permissive", "proteome.fasta"),
-        index_table = os.path.join(out_dir, "{sample}", "PG2_permissive", "fasta_header_index.tsv")
+        proteome = os.path.join(out_dir, "{sample}", "{db}", "proteome.fasta"),
+        index_table = os.path.join(out_dir, "{sample}", "{db}", "fasta_header_index.tsv")
     resources:
         mem_mb = 4000,
         time = 20,
@@ -50,16 +50,16 @@ rule fix_PG2_headers:
     script:
         "../scripts/fix_pg2_headers.py"
 
-# add decoys and contaminants to
+# add decoys and contaminants
 rule add_decoys_contams:
     input:
-        proteome = os.path.join(out_dir,"{sample}","PG2_permissive","proteome.fasta")
+        proteome = os.path.join(out_dir,"{sample}","{db}","proteome.fasta")
     output:
-        proteome = os.path.join(out_dir, "{sample}", "PG2_permissive",
+        proteome = os.path.join(out_dir, "{sample}", "{db}",
             "decoys-contam-proteome.fasta.fas")
     params:
         philosopher="/fragpipe_bin/fragPipe-22.0/fragpipe/tools/Philosopher/philosopher-v5.1.1",
-        tmpdir=os.path.join(out_dir, "{sample}", "PG2_permissive"),
+        tmpdir=os.path.join(out_dir, "{sample}", "{db}"),
         date = datetime.today().strftime('%Y-%m-%d')
     resources:
         mem_mb = 8000,
@@ -79,11 +79,11 @@ rule add_decoys_contams:
 
 rule create_workflow:
     input:
-        database = os.path.join(out_dir,"{sample}","PG2_permissive",
+        database = os.path.join(out_dir,"{sample}","{db}",
             "decoys-contam-proteome.fasta.fas"),
         workflow = "fragpipe_workflows/trypsin_dia_speclib_quant.workflow"
     output:
-        workflow = os.path.join(workflow_dir, "PG2_permissive",
+        workflow = os.path.join(workflow_dir, "{db}",
             "{sample}.workflow")
     resources:
         mem_mb = 4000,
@@ -94,23 +94,41 @@ rule create_workflow:
     script:
         "../scripts/write_dia_workflow.py"
 
+# create swissprot workflows
+rule swissprot_workflow:
+    input:
+        database = swissprot_fasta,
+        workflow = "fragpipe_workflows/trypsin_dia_speclib_quant.workflow"
+    output:
+        workflow = os.path.join(workflow_dir, "{db}",
+            "{sample}.workflow")
+    resources:
+        mem_mb = 4000,
+        time = 10,
+    threads: 1,
+    container:
+        "docker://quay.io/preskaa/proteomics:v240915"
+    script:
+        "../scripts/write_dia_workflow.py"
+
+
 # run fragpipe with our custom docker image
 rule run_fragpipe:
     input:
-        workflow = os.path.join(workflow_dir, "PG2_permissive",
+        workflow = os.path.join(workflow_dir, "{db}",
             "{sample}.workflow"),
-        manifest= os.path.join(workflow_dir, "PG2_permissive",
+        manifest= os.path.join(workflow_dir, "{db}",
             "{sample}.fp-manifest"),
         hardlink= os.path.join(out_dir,"{sample}",
-            "PG2_permissive","temp","{sample}.raw")
+            "{db}","temp","{sample}.raw")
     output:
-        protein_tsv = os.path.join(out_dir,"{sample}","PG2_permissive",
+        protein_tsv = os.path.join(out_dir,"{sample}","{db}",
             "protein.tsv"),
     params:
-        outdir=os.path.join(out_dir,"{sample}","PG2_permissive"),
+        outdir=os.path.join(out_dir,"{sample}","{db}"),
         memory=45, # in GB
         tempdir =  os.path.join(out_dir,"{sample}",
-            "PG2_permissive","temp")
+            "{db}","temp")
     threads: 4,
     resources:
         mem_mb = 50000,
