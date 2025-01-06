@@ -100,7 +100,7 @@ rule swissprot_workflow:
         database = swissprot_fasta,
         workflow = "fragpipe_workflows/trypsin_dia_speclib_quant.workflow"
     output:
-        workflow = os.path.join(workflow_dir, "{db}",
+        workflow = os.path.join(workflow_dir, "swissprot",
             "{sample}.workflow")
     resources:
         mem_mb = 4000,
