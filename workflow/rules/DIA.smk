@@ -101,7 +101,7 @@ rule swissprot_workflow:
         workflow = "fragpipe_workflows/trypsin_dia_speclib_quant.workflow"
     output:
         workflow = os.path.join(workflow_dir, "swissprot",
-            "{sample}.workflow")
+            "trypsin_dia_speclib_quant.workflow")
     resources:
         mem_mb = 4000,
         time = 10,
@@ -113,10 +113,19 @@ rule swissprot_workflow:
 
 
 # run fragpipe with our custom docker image
+
+# fetch correct workflow
+def _fetch_workflow(wildcards):
+    if wildcards.db != "swissprot":
+        workflow = os.path.join(workflow_dir, "{db}",
+            "{sample}.workflow")
+    else:
+        workflow = os.path.join(workflow_dir, "swissprot",
+            "trypsin_dia_speclib_quant.workflow")
+    return workflow
 rule run_fragpipe:
     input:
-        workflow = os.path.join(workflow_dir, "{db}",
-            "{sample}.workflow"),
+        workflow = _fetch_workflow,
         manifest= os.path.join(workflow_dir, "{db}",
             "{sample}.fp-manifest"),
         hardlink= os.path.join(out_dir,"{sample}",

@@ -16,19 +16,12 @@ def create_sample_list(samplesheet):
 
 # create sample list for outputs
 samples = create_sample_list(samplesheet)
-# if swissprot option is activated:
-if config["swissprot"]["activate"]:
-    dbs = pg_dbs + ["swissprot"]
-    norm_samples = create_sample_list(norm_samplesheet)
-    all_samples = samples + norm_samples
-else:
-    dbs = pg_dbs
 
 # get outputs
 def get_output():
     output = []
     target1 = expand(os.path.join(workflow_dir, "{db}",
-        "{sample}.fp-manifest"), sample=samples, db=dbs)
+        "{sample}.fp-manifest"), sample=samples, db=pg_dbs)
     target2 = expand(os.path.join(out_dir, "{sample}",
         "{db}","proteome.fasta"),
         sample=samples, db=pg_dbs)
@@ -37,7 +30,7 @@ def get_output():
     sample=samples, db=pg_dbs)
     target4 = expand(os.path.join(workflow_dir, "{db}",
             "{sample}.workflow"),
-        sample=samples, db=dbs)
+        sample=samples, db=pg_dbs)
     target5 = expand(os.path.join(out_dir,"{sample}","{db}",
             "protein.tsv"),
         sample=samples, db=pg_dbs)
@@ -48,8 +41,15 @@ def get_output():
     output.extend(target5)
     # if swissprot is activated, run fragpipe
     if config["swissprot"]["activate"]:
-        target6 = expand(os.path.join(out_dir,"{sample}","swissprot",
-            "protein.tsv"),
-            sample=all_samples)
+        norm_samples = create_sample_list(norm_samplesheet)
+        all_samples = samples + norm_samples
+        target6 = expand(os.path.join(workflow_dir, "swissprot",
+        "{sample}.fp-manifest"), sample=all_samples)
+        target7 = expand(os.path.join(workflow_dir, "swissprot",
+            "trypsin_dia_speclib_quant.workflow"), sample=all_samples)
+        target8 = expand(os.path.join(out_dir,"{sample}","swissprot",
+            "protein.tsv"), sample=all_samples)
         output.extend(target6)
+        output.extend(target7)
+        output.extend(target8)
     return output
