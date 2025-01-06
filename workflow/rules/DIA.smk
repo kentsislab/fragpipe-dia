@@ -6,9 +6,10 @@ rules for running Fragpipe's DIA_SpecLib_Quant workflow
 localrules: create_manifest, create_workflow
 
 def _get_diafilepath(wildcards):
-    if wildcards.db == "swissprot":
-        samplesheet = norm_samplesheet
     df = pd.read_csv(samplesheet,sep="\t")
+    if wildcards.db == "swissprot":
+        df1 = pd.read_csv(norm_samplesheet, sep="\t")
+        df = pd.concat([df, df1])
     # get path for sample
     temp = df[df["individual_id"] == wildcards.sample]
     directory = list(temp["directory"])[0]
