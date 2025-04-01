@@ -7,14 +7,13 @@
 #SBATCH --job-name=AML
 #SBATCH --mail-type=END,FAIL
 #SBATCH --mail-user=preskaa@mskcc.org
-#SBATCH --output=slurm%j_AML_snkmk.out
+#SBATCH --output=slurm%j_PG2restrictive_snkmk.out
 
 ### example slurm submission script ###
 
 ## load modules
 module load singularity/3.7.1
 ## set directories
-tag=APS010.1
 pipeline_dir=$HOME/fragpipe-dia
 config_yaml=config/config.yml
 profile_yaml=${pipeline_dir}/workflow/profiles/

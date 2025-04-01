@@ -3,13 +3,13 @@ out_dir: /data1/shahs3/users/preskaa/AMLproteogenomics/data/APS028_AML_PG2_analy
 workflow_dir: /data1/shahs3/users/preskaa/AMLproteogenomics/data/APS028_AML_PG2_analysis/fragpipe_workflows
 samplesheet: config/PG2_Frankfurt_AML_proteomics_clean.tsv
 # directory containing predicted proteomes from "permissive" PG2 for each patient
-PG2_dir: /data1/kentsisa/AML_proteogenomics/Proj_B-101-985
+PG2_dir: /data1/kentsisa/AML_proteogenomics/PG2_restrictive/Proj_B-101-986
 # choose which proteomegenerator search databases to search
-pg_dbs: ["PG2_permissive"]
+pg_dbs: ["PG2_restrictive"]
 # run against swissprot as well? provide a fasta file here where
 # decoys and contaminants have already been added (can download and add decoys/contams with Fragpipe GUI)
 # also provide samplesheet with normal controls (CD34+ cells)
 swissprot:
-  activate: True
+  activate: False
   fasta: /data1/shahs3/reference/ref-sarcoma/swissprot/2024-09-06-decoys-reviewed-isoforms-contam-UP000005640.fas
   normal_samplesheet: config/Frankfurt_normal_samples.tsv
