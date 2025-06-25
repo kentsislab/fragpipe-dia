@@ -2,7 +2,7 @@
 #SBATCH --partition=cpushort
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=4
-#SBATCH --time=0:20:00
+#SBATCH --time=1:30:00
 #SBATCH --mem=50GB
 #SBATCH --job-name=fragpipe
 #SBATCH --mail-type=END,FAIL
@@ -15,10 +15,10 @@ module purge
 #####
 # provide the paths to your workflow and manifest here
 workflow_dir=/data1/shahs3/users/preskaa/AMLproteogenomics/data/APS028_AML_PG2_analysis/fragpipe_workflows/PG2_permissive
-workflow=${workflow_dir}/F9.workflow
-manifest=${workflow_dir}/F9.fp-manifest
+workflow=$HOME/fragpipe-dia/fragpipe_workflows/fragpipe23_trypsin_dia_speclib_quant.workflow
+manifest=$HOME/fragpipe-dia/tests/test.fp-manifest
 # provide paths to fragpipe config tools, python and diann
-config_tools=/data1/kentsisa/fragpipe_ondemand/fragpipe_config_tools
+config_tools=/home/preskaa/250624_fragpipe_config_tools
 # provide out directory
 outdir=/data1/shahs3/users/preskaa/AMLproteogenomics/data/APS028_AML_PG2_analysis/fragpipe_23_test
 # tell fragpipe itself what resources are available
@@ -36,8 +36,7 @@ mkdir -p ${outdir}/diann-output
 
 # fix PG2 headers and add decoys and contaminants
 sif_path=/data1/shahs3/users/preskaa/singularity/fragpipe_23.0.sif
-
-fragpipe=/fragpipe_bin/fragPipe-23.0/fragpipe/bin/fragpipe
+fragpipe=/fragpipe_bin/fragpipe-23.0/fragpipe-23.0/bin/fragpipe
 # provide paths to fragpipe config tools, python and diann
 # config_tools=/fragpipe_bin/fragpipe_config_tools
 config_diann=/usr/bin/diann
@@ -53,5 +52,5 @@ ${fragpipe} --headless \
   --threads ${threads} \
   --config-diann ${config_diann} \
   --ram ${memory} \
-  --dry-run
+  # --dry-run
 "
