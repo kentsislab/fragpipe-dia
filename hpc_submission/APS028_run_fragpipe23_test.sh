@@ -39,7 +39,7 @@ sif_path=/data1/shahs3/users/preskaa/singularity/fragpipe_23.0.sif
 
 fragpipe=/fragpipe_bin/fragPipe-23.0/fragpipe/bin/fragpipe
 # provide paths to fragpipe config tools, python and diann
-config_tools=/fragpipe_bin/fragpipe_config_tools
+# config_tools=/fragpipe_bin/fragpipe_config_tools
 config_diann=/usr/bin/diann
 
  singularity exec -e -B /data1/shahs3:/data1/shahs3 \
