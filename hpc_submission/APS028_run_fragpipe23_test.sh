@@ -42,7 +42,7 @@ fragpipe=/fragpipe_bin/fragPipe-23.0/fragpipe/bin/fragpipe
 # config_tools=/fragpipe_bin/fragpipe_config_tools
 config_diann=/usr/bin/diann
 
- singularity exec -e -B /data1/shahs3:/data1/shahs3 \
+singularity exec -e -B /data1/shahs3:/data1/shahs3 \
    -B /data1/kentsisa:/data1/kentsisa \
    -B /admin/software:/admin/software ${sif_path} bash -c "
 ${fragpipe} --headless \
