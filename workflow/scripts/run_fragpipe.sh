@@ -19,7 +19,7 @@ mkdir -p ${outdir}/diann-output
 ${fragpipe} --headless \
   --workflow ${workflow} \
   --manifest ${manifest} \
-  --config-tools-folder fragpipe_config_tools \
+  --config-tools-folder /usr/bin/fragpipe_config_tools \
   --workdir ${outdir} \
   --threads ${threads} \
   --config-diann ${config_diann} \
