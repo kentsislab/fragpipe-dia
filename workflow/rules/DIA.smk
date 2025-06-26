@@ -38,9 +38,17 @@ rule create_manifest:
         "../scripts/write_dia_manifest.py"
 
 # fix PG2 headers for fragpipe analysis
+# fetch correct PG2 directory
+def _fetch_sample_proteome(wildcards):
+    for PG2_dir in PG2_dirs:
+        if wildcards.db in PG2_dir:
+            break
+    proteome = os.path.join(PG2_dir, wildcards.sample, "experiment/combined.proteome.unique.fasta")
+    return proteome
+
 rule fix_PG2_headers:
     input:
-        proteome = os.path.join(PG2_dir, "{sample}", "experiment/combined.proteome.unique.fasta")
+        proteome = _fetch_sample_proteome
     output:
         proteome = os.path.join(out_dir, "{sample}", "{db}", "proteome.fasta"),
         index_table = os.path.join(out_dir, "{sample}", "{db}", "fasta_header_index.tsv")
@@ -61,7 +69,7 @@ rule add_decoys_contams:
         proteome = os.path.join(out_dir, "{sample}", "{db}",
             "decoys-contam-proteome.fasta.fas")
     params:
-        philosopher="/fragpipe_bin/fragPipe-22.0/fragpipe/tools/Philosopher/philosopher-v5.1.1",
+        philosopher="/fragpipe_bin/fragpipe-23.0/fragpipe-23.0/tools/Philosopher/philosopher-v5.1.1",
         tmpdir=os.path.join(out_dir, "{sample}", "{db}"),
         date = datetime.today().strftime('%Y-%m-%d')
     resources:
@@ -69,7 +77,7 @@ rule add_decoys_contams:
         time = 360, # increased for retries default 120
     threads: 1,
     container:
-        "/data1/shahs3/users/preskaa/singularity/fragpipe_22.0.sif"
+        "/data1/shahs3/users/preskaa/singularity/fragpipe_23.0.sif"
     shell:
         """
         cd {params.tmpdir} &&
@@ -101,7 +109,7 @@ rule create_workflow:
 rule swissprot_workflow:
     input:
         database = swissprot_fasta,
-        workflow = "fragpipe_workflows/trypsin_dia_speclib_quant.workflow"
+        workflow = "fragpipe_workflows/fragpipe23_trypsin_dia_speclib_quant.workflow"
     output:
         workflow = os.path.join(workflow_dir, "swissprot",
             "trypsin_dia_speclib_quant.workflow")
@@ -140,13 +148,14 @@ rule run_fragpipe:
         outdir=os.path.join(out_dir,"{sample}","{db}"),
         memory=45, # in GB
         tempdir =  os.path.join(out_dir,"{sample}",
-            "{db}","temp")
+            "{db}","temp"),
+        config_tools = fragpipe_config_tools
     threads: 4,
     resources:
         mem_mb = 50000,
         time = 1440 # increased for retries default was 360
     container:
-        "/data1/shahs3/users/preskaa/singularity/fragpipe_22.0.sif"
+        "/data1/shahs3/users/preskaa/singularity/fragpipe_23.0.sif"
     script:
         "../scripts/run_fragpipe.sh"
 

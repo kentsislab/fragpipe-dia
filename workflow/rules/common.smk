@@ -4,10 +4,11 @@ import pandas as pd
 samplesheet=config["samplesheet"]
 out_dir = config["out_dir"]
 workflow_dir = config["workflow_dir"]
-PG2_dir = config["PG2_dir"]
+PG2_dirs = config["PG2_dirs"]
 pg_dbs = config["pg_dbs"]
 swissprot_fasta = config["swissprot"]["fasta"]
 norm_samplesheet=config["swissprot"]["normal_samplesheet"]
+fragpipe_config_tools = config["fragpipe_config_tools"]
 
 # create sample list
 def create_sample_list(samplesheet):

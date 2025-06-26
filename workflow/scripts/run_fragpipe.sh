@@ -6,11 +6,10 @@ outdir=${snakemake_params[outdir]}
 threads=${snakemake[threads]}
 memory=${snakemake_params[memory]} #in GB
 tempdir=${snakemake_params[tempdir]}
+config_tools=${snakemake_params[config_tools]}
 # fragpipe config tools
-fragpipe=/fragpipe_bin/fragPipe-22.0/fragpipe/bin/fragpipe
-config_tools=/fragpipe_bin/fragpipe_config_tools
-config_python=/usr/bin/python3.10
-config_diann=/fragpipe_bin/diann-1.9.1/diann-linux
+fragpipe=/fragpipe_bin/fragpipe-23.0/fragpipe-23.0/bin/fragpipe
+config_diann=/usr/bin/diann
 ########
 mkdir -p ${outdir}
 cd ${outdir}
@@ -24,7 +23,6 @@ ${fragpipe} --headless \
   --workdir ${outdir} \
   --threads ${threads} \
   --config-diann ${config_diann} \
-  --config-python ${config_python} \
   --ram ${memory}
 #  --dry-run
 # remove temporary directory upon completion
