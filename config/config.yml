@@ -1,7 +1,7 @@
 ### boiler plate config
 out_dir: /data1/shahs3/users/preskaa/AMLproteogenomics/data/APS028_AML_PG2_analysis/fragpipe23_out
 workflow_dir: /data1/shahs3/users/preskaa/AMLproteogenomics/data/APS028_AML_PG2_analysis/fragpipe23_workflows
-samplesheet: config/PG2_Frankfurt_AML_proteomics_clean.tsv
+samplesheet: config/PG2_Frankfurt_AML_proteomics_clean_test.tsv
 # directories containing predicted proteomes from from PG2 permissive and restrictive runs
 PG2_dirs: ["/data1/kentsisa/AML_proteogenomics/PG2_restrictive/Proj_B-101-986",
           "/data1/kentsisa/AML_proteogenomics/PG2_permissive/Proj_B-101-985"]
