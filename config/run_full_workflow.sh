@@ -37,7 +37,7 @@ snakemake \
   --configfile ${config_yaml}\
   --conda-prefix /data1/shahs3/users/preskaa/conda \
   --singularity-prefix /data1/shahs3/users/preskaa/singularity \
-  --singularity-args "--bind /data1/shahs3 --bind /data1/kentsisa" \
+  --singularity-args "--bind /data1/shahs3 --bind /data1/kentsisa --bind /home/preskaa/250624_fragpipe_config_tools:fragpipe_config_tools" \
   --dry-run
 
 
