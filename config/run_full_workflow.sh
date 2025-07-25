@@ -7,7 +7,7 @@
 #SBATCH --job-name=AML
 #SBATCH --mail-type=END,FAIL
 #SBATCH --mail-user=preskaa@mskcc.org
-#SBATCH --output=slurm%j_PG2restrictive_snkmk.out
+#SBATCH --output=slurm%j_fragpipe23_snkmk.out
 
 ### example slurm submission script ###
 

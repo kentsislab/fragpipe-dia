@@ -92,7 +92,7 @@ rule create_workflow:
     input:
         database = os.path.join(out_dir,"{sample}","{db}",
             "decoys-contam-proteome.fasta.fas"),
-        workflow = "fragpipe_workflows/trypsin_dia_speclib_quant.workflow"
+        workflow = "fragpipe_workflows/fragpipe23_trypsin_dia_speclib_quant.workflow"
     output:
         workflow = os.path.join(workflow_dir, "{db}",
             "{sample}.workflow")
