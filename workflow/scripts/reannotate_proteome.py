@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import pandas as pd
 from Bio import SeqIO
-from tqdm import tqdm
+import numpy as np
 
 """
 generate proteome from PG2 results in UniProt format
@@ -62,22 +62,21 @@ haplotypes = []
 tx_ids = []
 for _, row in mergedat.iterrows():
     header = row["header_pg2"]
-    if row["_merge"] == "both":
-        haplotypes.append("SwissProt")
-        tx_ids.append("SwissProt")
+    # determine haplotype
+    if header.startswith("pg|fusion"):
+        tx_ids.append("fusion")
+        haplotypes.append(np.nan)
     elif header.startswith("pg|MSTRG"):
         _, protein_id, loc = header.split()
         tx_id = protein_id.split(".p")[0]
         haplotype = loc.split("_")[0]
         haplotypes.append(int(haplotype))
         tx_ids.append(tx_id)
-    elif header.startswith("pg|fusion"):
-        haplotypes.append("fusion")
-        tx_ids.append("fusion")
     else:
         print(f"unhandled case: {header}")
 # add the haplotype and tx_id to the merged dataframe
 mergedat["haplotype"] = haplotypes
+mergedat['haplotype'] = mergedat['haplotype'].astype('Int64')
 mergedat["qry_id"] = tx_ids
 # merge with gffcmp information
 merge_gffcmp_df = pd.merge(mergedat, gffcmp_df, on = ["qry_id", "haplotype"], how="left")
@@ -106,18 +105,11 @@ with open(output_proteome, "w+") as outfile:
         if classcode == "=":
             gene = ref_gene_id
             tx_id = ref_id
-            ORF_id = stringtie_orf(header, tx_id, haplotype)
-            _, protein_id, _ = header.split()
-            transdecoder_ORF = protein_id.split(".p")[1]
-            ORF_id = f"{tx_id}.h{haplotype}.p{transdecoder_ORF}"
         # reannotate splice isoforms
         if classcode != "u" and qry_id != "fusion":
             gene = ref_gene_id
             tx_id = f"StrgTx{neotranscript_idx}"
             neotranscript_idx += 1
-            _, protein_id, _ = header.split()
-            transdecoder_ORF = protein_id.split(".p")[1]
-            ORF_id = f"{tx_id}.h{haplotype}.p{transdecoder_ORF}"
         # reannotate fusion genes
         elif qry_id == "fusion":
             gene = header.split(".")[1]
@@ -128,9 +120,6 @@ with open(output_proteome, "w+") as outfile:
             gene = f"StrgGene{neogene_idx}"
             tx_id = f"StrgTx{neotranscript_idx}"
             neotranscript_idx += 1
-            _, protein_id, _ = header.split()
-            transdecoder_ORF = protein_id.split(".p")[1]
-            ORF_id = f"{tx_id}.h{haplotype}.p{transdecoder_ORF}"
             neogene_idx += 1
         # build protein fasta
         # if exact match to swissprot, give it a proper swissprot header
@@ -146,10 +135,12 @@ with open(output_proteome, "w+") as outfile:
             # if it's a fusion, give a fusion protein id
             if row["qry_id"] == "fusion":
                 protein_id = f"GF{fusion_idx}"
+                ORF_id = f"{tx_id}.p{fusion_idx}"
                 fusion_idx += 1
             # else, give it a PG2 id
             else:
                 protein_id = f"PG{proteoform_idx}"
+                ORF_id = stringtie_orf(header, tx_id, int(haplotype))
                 proteoform_idx += 1
             new_header = f">tr|{protein_id}|{ORF_id} PG3 predicted ORF OS=Homo sapiens OX=9606 GN={gene} PE=2\n"
             # determined not to have an exact match in swissprot
