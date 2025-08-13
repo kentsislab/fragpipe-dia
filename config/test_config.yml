@@ -1,7 +1,7 @@
 ### boiler plate config
 out_dir: /data1/shahs3/users/preskaa/AMLproteogenomics/data/APS028_AML_PG2_analysis/reannotation_test
 workflow_dir: /data1/shahs3/users/preskaa/AMLproteogenomics/data/APS028_AML_PG2_analysis/fragpipe23_workflows
-samplesheet: config/PG2_Frankfurt_AML_proteomics_clean.tsv
+samplesheet: config/PG2_Frankfurt_AML_proteomics_clean_test.tsv
 # directories containing predicted proteomes from from PG2 permissive and restrictive runs
 PG2_dirs: ["/data1/kentsisa/AML_proteogenomics/PG2_restrictive/Proj_B-101-986"]
 # choose which proteomegenerator search databases to search
@@ -9,6 +9,8 @@ pg_dbs: ["PG2_restrictive"]
 # reannotate PG2 headers to UniProt style (need transcriptome gtfs to be available)
 reannotate:
   activate: True
+  haplotypes: [1, 2]
+  ref_gtf: /data1/shahs3/reference/ref-sarcoma/GRCh38/v45/gencode.v45.primary_assembly.annotation.gtf
 # run fragpipe
 fragpipe:
   activate: False

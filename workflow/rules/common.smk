@@ -9,6 +9,8 @@ pg_dbs = config["pg_dbs"]
 swissprot_fasta = config["swissprot"]["fasta"]
 norm_samplesheet=config["swissprot"]["normal_samplesheet"]
 fragpipe_config_tools = config["fragpipe_config_tools"]
+haplotypes = config["reannotate"]["haplotypes"]
+ref_gtf = config["reannotate"]["ref_gtf"]
 
 # create sample list
 def create_sample_list(samplesheet):
@@ -17,17 +19,19 @@ def create_sample_list(samplesheet):
 
 # create sample list for outputs
 samples = create_sample_list(samplesheet)
-haplotypes = config["haplotypes"]
 
 # get outputs
 def get_output():
     output = []
     # reannotate PG2 proteomes
     if config["reannotate"]["activate"]:
-        target9 = expand(os.path.join(out_dir, "{sample}",
-            "{db}", "transcripts.haplo{haplotype}.gtf"),
-            haplotypes=haplotypes, sample=samples, db=pg_dbs)
-        output.extend(target9)
+        target9 = expand(os.path.join(out_dir, "{sample}", "{db}", 
+        "transcriptome", "haplotype_{haplotype}", "transcripts.gtf"),
+            haplotype=haplotypes, sample=samples, db=pg_dbs)
+        target10 = expand(os.path.join(out_dir, "{sample}", "{db}", 
+        "transcriptome", "haplotype_{haplotype}", "transcript.gffcmp.annotated.gtf"),
+            haplotype=haplotypes, sample=samples, db=pg_dbs)
+        output.extend(target10)
     # run fragpipe
     if config["fragpipe"]["activate"]:
         target1 = expand(os.path.join(workflow_dir, "{db}",
