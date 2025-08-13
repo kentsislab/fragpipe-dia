@@ -17,29 +17,38 @@ def create_sample_list(samplesheet):
 
 # create sample list for outputs
 samples = create_sample_list(samplesheet)
+haplotypes = config["haplotypes"]
 
 # get outputs
 def get_output():
     output = []
-    target1 = expand(os.path.join(workflow_dir, "{db}",
-        "{sample}.fp-manifest"), sample=samples, db=pg_dbs)
-    target2 = expand(os.path.join(out_dir, "{sample}",
-        "{db}","proteome.fasta"),
+    # reannotate PG2 proteomes
+    if config["reannotate"]["activate"]:
+        target9 = expand(os.path.join(out_dir, "{sample}",
+            "{db}", "transcripts.haplo{haplotype}.gtf"),
+            haplotypes=haplotypes, sample=samples, db=pg_dbs)
+        output.extend(target9)
+    # run fragpipe
+    if config["fragpipe"]["activate"]:
+        target1 = expand(os.path.join(workflow_dir, "{db}",
+            "{sample}.fp-manifest"), sample=samples, db=pg_dbs)
+        target2 = expand(os.path.join(out_dir, "{sample}",
+            "{db}","proteome.fasta"),
+            sample=samples, db=pg_dbs)
+        target3 = expand(os.path.join(out_dir, "{sample}",
+            "{db}", "decoys-contam-proteome.fasta.fas"),
         sample=samples, db=pg_dbs)
-    target3 = expand(os.path.join(out_dir, "{sample}",
-        "{db}", "decoys-contam-proteome.fasta.fas"),
-    sample=samples, db=pg_dbs)
-    target4 = expand(os.path.join(workflow_dir, "{db}",
-            "{sample}.workflow"),
-        sample=samples, db=pg_dbs)
-    target5 = expand(os.path.join(out_dir,"{sample}","{db}",
-            "protein.tsv"),
-        sample=samples, db=pg_dbs)
-    output.extend(target1)
-    output.extend(target2)
-    output.extend(target3)
-    output.extend(target4)
-    output.extend(target5)
+        target4 = expand(os.path.join(workflow_dir, "{db}",
+                "{sample}.workflow"),
+            sample=samples, db=pg_dbs)
+        target5 = expand(os.path.join(out_dir,"{sample}","{db}",
+                "protein.tsv"),
+            sample=samples, db=pg_dbs)
+        output.extend(target1)
+        output.extend(target2)
+        output.extend(target3)
+        output.extend(target4)
+        output.extend(target5)
     # if swissprot is activated, run fragpipe
     if config["swissprot"]["activate"]:
         norm_samples = create_sample_list(norm_samplesheet)
