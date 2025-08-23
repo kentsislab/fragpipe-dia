@@ -70,6 +70,10 @@ rule reannotate_proteome:
         protein_table = os.path.join(out_dir, "{sample}", "{db}", "proteome.tsv")
     params:
         swissprot_fasta = config["reannotate"]["swissprot"]
+    resources:
+        mem_mb = 8000,
+        time = 20,
+        partition="cpushort"
     container:
         "docker://quay.io/shahlab_singularity/biopython:v250501"
     script:
