@@ -34,8 +34,8 @@ rule run_gffcompare:
         gtf = os.path.join(out_dir, "{sample}", "{db}", "transcriptome", 
         "haplotype_{haplotype}", "transcripts.gtf")
     output:
-        annotated_gtf = os.path.join(out_dir, "{sample}", "{db}", "transcriptome", 
-        "haplotype_{haplotype}", "transcript.gffcmp.annotated.gtf")
+        annotated_tmap = os.path.join(out_dir, "{sample}", "{db}", "transcriptome",
+        "haplotype_{haplotype}", "transcript.gffcmp.annotated.gtf.tmap")
     params:
         ref_gtf = ref_gtf,
         out_prefix =  os.path.join(out_dir, "{sample}", "{db}", "transcriptome", 
@@ -50,6 +50,25 @@ rule run_gffcompare:
         """
         gffcompare {input.gtf} -r {params.ref_gtf} -o {params.out_prefix}
         """
+# reannotate proteome
+rule reannotate_proteome:
+    input:
+        gffcmp_hap1 = os.path.join(out_dir,"{sample}","{db}","transcriptome",
+            "haplotype_1","transcript.gffcmp.annotated.gtf.tmap"),
+        gffcmp_hap2= os.path.join(out_dir,"{sample}","{db}","transcriptome",
+            "haplotype_2","transcript.gffcmp.annotated.gtf.tmap"),
+        proteome = _fetch_sample_proteome
+    output:
+        proteome = os.path.join(out_dir, "{sample}", "{db}", "proteome.fasta"),
+        protein_table = os.path.join(out_dir, "{sample}", "{db}", "proteome.tsv")
+    params:
+        swissprot_fasta = config["reannotate"]["swissprot"]
+    container:
+        "xyz"
+    script:
+        "../scripts/reannotate_proteome.py"
+
+
 
 
 

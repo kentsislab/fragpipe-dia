@@ -29,16 +29,18 @@ def get_output():
         "transcriptome", "haplotype_{haplotype}", "transcripts.gtf"),
             haplotype=haplotypes, sample=samples, db=pg_dbs)
         target10 = expand(os.path.join(out_dir, "{sample}", "{db}", 
-        "transcriptome", "haplotype_{haplotype}", "transcript.gffcmp.annotated.gtf"),
-            haplotype=haplotypes, sample=samples, db=pg_dbs)
+        "transcriptome", "haplotype_{haplotype}", "transcript.gffcmp.annotated.gtf.tmap"),
+            haplotype=haplotypes, sample=samples, db=pg_dbs),
+        target11 = expand(os.path.join(out_dir, "{sample}",
+            "{db}","proteome.fasta"),
+            sample=samples, db=pg_dbs)
+        output.extend(target9)
         output.extend(target10)
+        output.extend(target11)
     # run fragpipe
     if config["fragpipe"]["activate"]:
         target1 = expand(os.path.join(workflow_dir, "{db}",
             "{sample}.fp-manifest"), sample=samples, db=pg_dbs)
-        target2 = expand(os.path.join(out_dir, "{sample}",
-            "{db}","proteome.fasta"),
-            sample=samples, db=pg_dbs)
         target3 = expand(os.path.join(out_dir, "{sample}",
             "{db}", "decoys-contam-proteome.fasta.fas"),
         sample=samples, db=pg_dbs)
@@ -49,7 +51,6 @@ def get_output():
                 "protein.tsv"),
             sample=samples, db=pg_dbs)
         output.extend(target1)
-        output.extend(target2)
         output.extend(target3)
         output.extend(target4)
         output.extend(target5)

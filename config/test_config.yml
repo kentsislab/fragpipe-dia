@@ -7,10 +7,12 @@ PG2_dirs: ["/data1/kentsisa/AML_proteogenomics/PG2_restrictive/Proj_B-101-986"]
 # choose which proteomegenerator search databases to search
 pg_dbs: ["PG2_restrictive"]
 # reannotate PG2 headers to UniProt style (need transcriptome gtfs to be available)
+# provide swissprot fasta without decoys and contams here for reannotation
 reannotate:
   activate: True
   haplotypes: [1, 2]
   ref_gtf: /data1/shahs3/reference/ref-sarcoma/GRCh38/v45/gencode.v45.primary_assembly.annotation.gtf
+  swissprot: /data1/shahs3/reference/ref-sarcoma/blast_databases/swissprot_human_250206/2025-02-06-reviewed-isoforms-UP000005640.fas
 # run fragpipe
 fragpipe:
   activate: False
