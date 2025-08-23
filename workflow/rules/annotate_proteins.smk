@@ -61,9 +61,9 @@ rule run_gffcompare:
 rule reannotate_proteome:
     input:
         gffcmp_hap1 = os.path.join(out_dir,"{sample}","{db}","transcriptome",
-            "haplotype_1","transcript.gffcmp.annotated.gtf.tmap"),
+            "haplotype_1","transcript.gffcmp.transcripts.gtf.tmap"),
         gffcmp_hap2= os.path.join(out_dir,"{sample}","{db}","transcriptome",
-            "haplotype_2","transcript.gffcmp.annotated.gtf.tmap"),
+            "haplotype_2","transcript.gffcmp.transcripts.gtf.tmap"),
         proteome = _fetch_sample_proteome
     output:
         proteome = os.path.join(out_dir, "{sample}", "{db}", "proteome.fasta"),
