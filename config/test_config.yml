@@ -15,7 +15,7 @@ reannotate:
   swissprot: /data1/shahs3/reference/ref-sarcoma/blast_databases/swissprot_human_250206/2025-02-06-reviewed-isoforms-UP000005640.fas
 # run fragpipe
 fragpipe:
-  activate: False
+  activate: True
 # path to fragpipe config tools which can't be dockerized
 fragpipe_config_tools: /home/preskaa/250624_fragpipe_config_tools
 # run against swissprot as well? provide a fasta file here where

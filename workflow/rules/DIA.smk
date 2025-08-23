@@ -37,31 +37,7 @@ rule create_manifest:
     script:
         "../scripts/write_dia_manifest.py"
 
-# fix PG2 headers for fragpipe analysis
-# fetch correct PG2 directory
-def _fetch_sample_proteome(wildcards):
-    for PG2_dir in PG2_dirs:
-        if wildcards.db in PG2_dir:
-            break
-    proteome = os.path.join(PG2_dir, wildcards.sample, "experiment/combined.proteome.unique.fasta")
-    return proteome
-
-# rule fix_PG2_headers:
-#     input:
-#         proteome = _fetch_sample_proteome
-#     output:
-#         proteome = os.path.join(out_dir, "{sample}", "{db}", "proteome.fasta"),
-#         index_table = os.path.join(out_dir, "{sample}", "{db}", "fasta_header_index.tsv")
-#     resources:
-#         mem_mb = 4000,
-#         time = 20,
-#     threads: 1,
-#     container:
-#         "docker://quay.io/preskaa/proteomics:v240915"
-#     script:
-#         "../scripts/fix_pg2_headers.py"
-
-# add decoys and contaminants
+# add decoys and contaminants to PG2 proteomes
 rule add_decoys_contams:
     input:
         proteome = os.path.join(out_dir,"{sample}","{db}","proteome.fasta")
