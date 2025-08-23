@@ -71,7 +71,7 @@ rule reannotate_proteome:
     params:
         swissprot_fasta = config["reannotate"]["swissprot"]
     container:
-        "xyz"
+        "docker://quay.io/preskaa/proteomics:v240915"
     script:
         "../scripts/reannotate_proteome.py"
 
