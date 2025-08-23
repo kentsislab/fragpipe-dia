@@ -14,6 +14,13 @@ def _fetch_sample_gtf(wildcards):
         "transcriptome",
         "transcripts.gtf")
     return transcripts
+# fetch correct PG2 directory
+def _fetch_sample_proteome(wildcards):
+    for PG2_dir in PG2_dirs:
+        if wildcards.db in PG2_dir:
+            break
+    proteome = os.path.join(PG2_dir, wildcards.sample, "experiment/combined.proteome.unique.fasta")
+    return proteome
 # fix chromosome names in transcript gtfs to be compatible with gffcompare
 rule chr_names:
     input:
