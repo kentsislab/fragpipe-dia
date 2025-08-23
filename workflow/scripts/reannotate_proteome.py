@@ -68,10 +68,11 @@ haplotypes = []
 tx_ids = []
 for _, row in mergedat.iterrows():
     header = row["header_pg2"]
-    # determine haplotype
+    # fusions don't encode haplotype info in headers
     if header.startswith("pg|fusion"):
         tx_ids.append("fusion")
-        haplotypes.append(np.nan)
+        haplotypes.append(-1)
+    # determine haplotype
     elif header.startswith("pg|MSTRG"):
         _, protein_id, loc = header.split()
         tx_id = protein_id.split(".p")[0]
@@ -101,6 +102,9 @@ with open(output_proteome, "w+") as outfile:
     for _, row in merge_gffcmp_df.iterrows():
         header = row["header_pg2"]
         haplotype = row["haplotype"]
+        # give fusions no haplotype
+        if haplotype == -1:
+            haplotype = np.nan
         # first, build ORF annotation for different cases
         ref_gene_id = row["ref_gene_id"]
         ref_id = row["ref_id"]
