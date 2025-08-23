@@ -46,20 +46,20 @@ def _fetch_sample_proteome(wildcards):
     proteome = os.path.join(PG2_dir, wildcards.sample, "experiment/combined.proteome.unique.fasta")
     return proteome
 
-rule fix_PG2_headers:
-    input:
-        proteome = _fetch_sample_proteome
-    output:
-        proteome = os.path.join(out_dir, "{sample}", "{db}", "proteome.fasta"),
-        index_table = os.path.join(out_dir, "{sample}", "{db}", "fasta_header_index.tsv")
-    resources:
-        mem_mb = 4000,
-        time = 20,
-    threads: 1,
-    container:
-        "docker://quay.io/preskaa/proteomics:v240915"
-    script:
-        "../scripts/fix_pg2_headers.py"
+# rule fix_PG2_headers:
+#     input:
+#         proteome = _fetch_sample_proteome
+#     output:
+#         proteome = os.path.join(out_dir, "{sample}", "{db}", "proteome.fasta"),
+#         index_table = os.path.join(out_dir, "{sample}", "{db}", "fasta_header_index.tsv")
+#     resources:
+#         mem_mb = 4000,
+#         time = 20,
+#     threads: 1,
+#     container:
+#         "docker://quay.io/preskaa/proteomics:v240915"
+#     script:
+#         "../scripts/fix_pg2_headers.py"
 
 # add decoys and contaminants
 rule add_decoys_contams:
