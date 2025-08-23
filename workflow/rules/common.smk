@@ -29,7 +29,7 @@ def get_output():
         "transcriptome", "haplotype_{haplotype}", "transcripts.gtf"),
             haplotype=haplotypes, sample=samples, db=pg_dbs)
         target10 = expand(os.path.join(out_dir, "{sample}", "{db}", 
-        "transcriptome", "haplotype_{haplotype}", "transcript.gffcmp.annotated.gtf.tmap"),
+        "transcriptome", "haplotype_{haplotype}", "transcript.gffcmp.transcripts.gtf.tmap"),
             haplotype=haplotypes, sample=samples, db=pg_dbs),
         target11 = expand(os.path.join(out_dir, "{sample}",
             "{db}","proteome.fasta"),

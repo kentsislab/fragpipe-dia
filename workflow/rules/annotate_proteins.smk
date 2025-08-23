@@ -42,7 +42,7 @@ rule run_gffcompare:
         "haplotype_{haplotype}", "transcripts.gtf")
     output:
         annotated_tmap = os.path.join(out_dir, "{sample}", "{db}", "transcriptome",
-        "haplotype_{haplotype}", "transcript.gffcmp.annotated.gtf.tmap")
+        "haplotype_{haplotype}", "transcript.gffcmp.transcripts.gtf.tmap")
     params:
         ref_gtf = ref_gtf,
         out_prefix =  os.path.join(out_dir, "{sample}", "{db}", "transcriptome", 
