@@ -23,6 +23,6 @@ fragpipe_config_tools: /home/preskaa/250624_fragpipe_config_tools
 # decoys and contaminants have already been added (can download and add decoys/contams with Fragpipe GUI)
 # also provide samplesheet with normal controls (CD34+ cells)
 swissprot:
-  activate: True
+  activate: False
   fasta: /data1/shahs3/reference/ref-sarcoma/swissprot/2024-09-06-decoys-reviewed-isoforms-contam-UP000005640.fas
   normal_samplesheet: config/Frankfurt_normal_samples.tsv
