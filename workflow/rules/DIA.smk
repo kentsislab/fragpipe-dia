@@ -128,7 +128,7 @@ rule run_fragpipe:
         config_tools = fragpipe_config_tools
     threads: 4,
     resources:
-        mem_mb = 50000,
+        mem_mb = 100000,
         time = 1440 # increased for retries default was 360
     container:
         "/data1/shahs3/users/preskaa/singularity/fragpipe_23.0.sif"
