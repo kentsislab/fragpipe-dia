@@ -6,7 +6,7 @@ samplesheet: config/PG2_Frankfurt_AML_proteomics_clean.tsv
 PG2_dirs: ["/data1/kentsisa/AML_proteogenomics/PG2_restrictive/Proj_B-101-986",
           "/data1/kentsisa/AML_proteogenomics/PG2_permissive/Proj_B-101-985"]
 # choose which proteomegenerator search databases to search
-pg_dbs: ["PG2_restrictive", "PG2_permissive", "swissprot"]
+pg_dbs: ["PG2_restrictive", "PG2_permissive"]
 # reannotate PG2 headers to UniProt style (need transcriptome gtfs to be available)
 # provide swissprot fasta without decoys and contams here for reannotation
 reannotate:
