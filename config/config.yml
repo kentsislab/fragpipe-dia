@@ -1,5 +1,5 @@
 ### boiler plate config
-out_dir: /data1/shahs3/users/preskaa/AMLproteogenomics/data/APS028_AML_PG2_analysis/fragpipe23_out
+out_dir: /data1/shahs3/users/preskaa/AMLproteogenomics/data/APS028_AML_PG2_analysis/fragpipe23_reannotated_out
 workflow_dir: /data1/shahs3/users/preskaa/AMLproteogenomics/data/APS028_AML_PG2_analysis/fragpipe23_workflows
 samplesheet: config/PG2_Frankfurt_AML_proteomics_clean.tsv
 # directories containing predicted proteomes from from PG2 permissive and restrictive runs
@@ -7,6 +7,16 @@ PG2_dirs: ["/data1/kentsisa/AML_proteogenomics/PG2_restrictive/Proj_B-101-986",
           "/data1/kentsisa/AML_proteogenomics/PG2_permissive/Proj_B-101-985"]
 # choose which proteomegenerator search databases to search
 pg_dbs: ["PG2_restrictive", "PG2_permissive", "swissprot"]
+# reannotate PG2 headers to UniProt style (need transcriptome gtfs to be available)
+# provide swissprot fasta without decoys and contams here for reannotation
+reannotate:
+  activate: True
+  haplotypes: [1, 2]
+  ref_gtf: /data1/shahs3/reference/ref-sarcoma/GRCh38/v45/gencode.v45.primary_assembly.annotation.gtf
+  swissprot: /data1/shahs3/reference/ref-sarcoma/blast_databases/swissprot_human_250206/2025-02-06-reviewed-isoforms-UP000005640.fas
+# run fragpipe
+fragpipe:
+  activate: True
 # path to fragpipe config tools which can't be dockerized
 fragpipe_config_tools: /home/preskaa/250624_fragpipe_config_tools
 # run against swissprot as well? provide a fasta file here where
