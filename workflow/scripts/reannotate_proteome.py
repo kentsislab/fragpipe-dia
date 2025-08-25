@@ -31,19 +31,19 @@ def stringtie_orf(header, tx_id, haplotype):
     return ORF_id
 
 ## inputs
-gffcmp_hap1 = snakemake.input["gffcmp_hap1"]
-gffcmp_hap2 = snakemake.input["gffcmp_hap2"]
-input_proteome = snakemake.input["proteome"]
-output_proteome = snakemake.output["proteome"]
-output_protein_table = snakemake.output["protein_table"]
-swissprot_fasta = snakemake.params["swissprot_fasta"]
+# gffcmp_hap1 = snakemake.input["gffcmp_hap1"]
+# gffcmp_hap2 = snakemake.input["gffcmp_hap2"]
+# input_proteome = snakemake.input["proteome"]
+# output_proteome = snakemake.output["proteome"]
+# output_protein_table = snakemake.output["protein_table"]
+# swissprot_fasta = snakemake.params["swissprot_fasta"]
 
-# gffcmp_hap1 = "/data1/shahs3/users/preskaa/AMLproteogenomics/data/APS028_AML_PG2_analysis/reannotation_test/F1/PG2_restrictive/transcriptome/haplotype_1/transcript.gffcmp.transcripts.gtf.tmap"
-# gffcmp_hap2 = "/data1/shahs3/users/preskaa/AMLproteogenomics/data/APS028_AML_PG2_analysis/reannotation_test/F1/PG2_restrictive/transcriptome/haplotype_2/transcript.gffcmp.transcripts.gtf.tmap"
-# input_proteome = "/data1/kentsisa/AML_proteogenomics/PG2_restrictive/Proj_B-101-986/F1/experiment/combined.proteome.unique.fasta"
-# output_proteome = "/data1/shahs3/users/preskaa/AMLproteogenomics/data/APS028_AML_PG2_analysis/reannotation_test/F1/PG2_restrictive/test.proteome.fasta"
-# output_protein_table = "/data1/shahs3/users/preskaa/AMLproteogenomics/data/APS028_AML_PG2_analysis/reannotation_test/F1/PG2_restrictive/test.proteome.tsv"
-# swissprot_fasta = "/data1/shahs3/reference/ref-sarcoma/blast_databases/swissprot_human_250206/2025-02-06-reviewed-isoforms-UP000005640.fas"
+gffcmp_hap1 = "/data1/shahs3/users/preskaa/AMLproteogenomics/data/APS028_AML_PG2_analysis/fragpipe23_reannotated_out/F83/PG2_restrictive/transcriptome/haplotype_1/transcript.gffcmp.transcripts.gtf.tmap"
+gffcmp_hap2 = "/data1/shahs3/users/preskaa/AMLproteogenomics/data/APS028_AML_PG2_analysis/fragpipe23_reannotated_out/F83/PG2_restrictive/transcriptome/haplotype_2/transcript.gffcmp.transcripts.gtf.tmap"
+input_proteome = "/data1/kentsisa/AML_proteogenomics/PG2_restrictive/Proj_B-101-986/F83/experiment/combined.proteome.unique.fasta"
+output_proteome = "/data1/shahs3/users/preskaa/AMLproteogenomics/data/APS028_AML_PG2_analysis/reannotation_test/test.proteome.fasta"
+output_protein_table = "/data1/shahs3/users/preskaa/AMLproteogenomics/data/APS028_AML_PG2_analysis/reannotation_test/test.proteome.tsv"
+swissprot_fasta = "/data1/shahs3/reference/ref-sarcoma/blast_databases/swissprot_human_250206/2025-02-06-reviewed-isoforms-UP000005640.fas"
 
 # load in gffcmp results
 gffcmp_df = pd.read_csv(gffcmp_hap1, sep="\t")
@@ -140,6 +140,7 @@ with open(output_proteome, "w+") as outfile:
             temp = sp_header.split("|")
             protein_id = temp[1]
             sp_status = True
+            ORF_id = "n/a"
         # if it's a newly predicted ORF give it a trembl header (kind of)
         else:
             # if it's a fusion, give a fusion protein id
