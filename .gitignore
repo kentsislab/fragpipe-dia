@@ -1,0 +1,7 @@
+.snakemake
+.config
+fcinfo*
+logs/**
+hpc_submission/*.out
+.cache/*
+config/*.out
