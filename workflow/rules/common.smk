@@ -9,6 +9,8 @@ pg_dbs = config["pg_dbs"]
 swissprot_fasta = config["swissprot"]["fasta"]
 norm_samplesheet=config["swissprot"]["normal_samplesheet"]
 fragpipe_config_tools = config["fragpipe_config_tools"]
+haplotypes = config["reannotate"]["haplotypes"]
+ref_gtf = config["reannotate"]["ref_gtf"]
 
 # create sample list
 def create_sample_list(samplesheet):
@@ -17,29 +19,45 @@ def create_sample_list(samplesheet):
 
 # create sample list for outputs
 samples = create_sample_list(samplesheet)
+# remove samples with missing gtf files for now
+problem_samples = ["F66", "F29", "F21", "F35"]
+set_diff = set(samples)-set(problem_samples)
+samples = list(set_diff)
 
 # get outputs
 def get_output():
     output = []
-    target1 = expand(os.path.join(workflow_dir, "{db}",
-        "{sample}.fp-manifest"), sample=samples, db=pg_dbs)
-    target2 = expand(os.path.join(out_dir, "{sample}",
-        "{db}","proteome.fasta"),
+    # reannotate PG2 proteomes
+    if config["reannotate"]["activate"]:
+        target9 = expand(os.path.join(out_dir, "{sample}", "{db}", 
+        "transcriptome", "haplotype_{haplotype}", "transcripts.gtf"),
+            haplotype=haplotypes, sample=samples, db=pg_dbs)
+        target10 = expand(os.path.join(out_dir, "{sample}", "{db}", 
+        "transcriptome", "haplotype_{haplotype}", "transcript.gffcmp.transcripts.gtf.tmap"),
+            haplotype=haplotypes, sample=samples, db=pg_dbs),
+        target11 = expand(os.path.join(out_dir, "{sample}",
+            "{db}","proteome.fasta"),
+            sample=samples, db=pg_dbs)
+        output.extend(target9)
+        output.extend(target10)
+        output.extend(target11)
+    # run fragpipe
+    if config["fragpipe"]["activate"]:
+        target1 = expand(os.path.join(workflow_dir, "{db}",
+            "{sample}.fp-manifest"), sample=samples, db=pg_dbs)
+        target3 = expand(os.path.join(out_dir, "{sample}",
+            "{db}", "decoys-contam-proteome.fasta.fas"),
         sample=samples, db=pg_dbs)
-    target3 = expand(os.path.join(out_dir, "{sample}",
-        "{db}", "decoys-contam-proteome.fasta.fas"),
-    sample=samples, db=pg_dbs)
-    target4 = expand(os.path.join(workflow_dir, "{db}",
-            "{sample}.workflow"),
-        sample=samples, db=pg_dbs)
-    target5 = expand(os.path.join(out_dir,"{sample}","{db}",
-            "protein.tsv"),
-        sample=samples, db=pg_dbs)
-    output.extend(target1)
-    output.extend(target2)
-    output.extend(target3)
-    output.extend(target4)
-    output.extend(target5)
+        target4 = expand(os.path.join(workflow_dir, "{db}",
+                "{sample}.workflow"),
+            sample=samples, db=pg_dbs)
+        target5 = expand(os.path.join(out_dir,"{sample}","{db}",
+                "protein.tsv"),
+            sample=samples, db=pg_dbs)
+        output.extend(target1)
+        output.extend(target3)
+        output.extend(target4)
+        output.extend(target5)
     # if swissprot is activated, run fragpipe
     if config["swissprot"]["activate"]:
         norm_samples = create_sample_list(norm_samplesheet)

@@ -7,7 +7,7 @@
 #SBATCH --job-name=AML
 #SBATCH --mail-type=END,FAIL
 #SBATCH --mail-user=preskaa@mskcc.org
-#SBATCH --output=slurm%j_reannotate_snkmk.out
+#SBATCH --output=slurm%j_fragpipe23_snkmk.out
 
 ### example slurm submission script ###
 
@@ -15,7 +15,7 @@
 module load singularity/3.7.1
 ## set directories
 pipeline_dir=$HOME/fragpipe-dia
-config_yaml=config/config.yml
+config_yaml=config/test_config.yml
 profile_yaml=${pipeline_dir}/workflow/profiles/
 snakefile=${pipeline_dir}/workflow/Snakefile
 ## switch to the right conda environment
@@ -38,7 +38,7 @@ snakemake \
   --conda-prefix /data1/shahs3/users/preskaa/conda \
   --singularity-prefix /data1/shahs3/users/preskaa/singularity \
   --singularity-args "--bind /data1/shahs3 --bind /data1/kentsisa --bind /home/preskaa/250624_fragpipe_config_tools:/usr/bin/fragpipe_config_tools" \
-#  --dry-run
+  #--dry-run
 
 
 
