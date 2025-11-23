@@ -11,6 +11,7 @@ norm_samplesheet=config["swissprot"]["normal_samplesheet"]
 fragpipe_config_tools = config["fragpipe_config_tools"]
 haplotypes = config["reannotate"]["haplotypes"]
 ref_gtf = config["reannotate"]["ref_gtf"]
+unified_proteome = config["unified_proteome"]["fasta"]
 
 # create sample list
 def create_sample_list(samplesheet):
@@ -58,7 +59,7 @@ def get_output():
         output.extend(target3)
         output.extend(target4)
         output.extend(target5)
-    # if swissprot is activated, run fragpipe
+    # if swissprot is activated, run fragpipe against swissprot
     if config["swissprot"]["activate"]:
         norm_samples = create_sample_list(norm_samplesheet)
         all_samples = samples + norm_samples
@@ -71,4 +72,21 @@ def get_output():
         output.extend(target6)
         output.extend(target7)
         output.extend(target8)
+    # if unified proteome is activated,
+    # run fragpipe against a single unified proteome for all samples
+    if config["unified_proteome"]["activate"]:
+        norm_samples = create_sample_list(norm_samplesheet)
+        all_samples = samples + norm_samples
+        target9 = os.path.join(out_dir, "unified_proteome",
+            "decoys-contam-proteome.fasta.fas")
+        target10 = expand(os.path.join(workflow_dir, "unified_proteome",
+        "{sample}.fp-manifest"), sample=all_samples)
+        target11 = expand(os.path.join(workflow_dir, "unified_proteome",
+            "trypsin_dia_speclib_quant.workflow"), sample=all_samples)
+        target12 = expand(os.path.join(out_dir,"{sample}","unified_proteome",
+            "protein.tsv"), sample=all_samples)
+        output.extend(target9)
+        output.extend(target10)
+        output.extend(target11)
+        output.extend(target12)
     return output

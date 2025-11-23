@@ -7,7 +7,7 @@ localrules: create_manifest, create_workflow
 
 def _get_diafilepath(wildcards):
     df = pd.read_csv(samplesheet,sep="\t")
-    if wildcards.db == "swissprot":
+    if wildcards.db == "swissprot" or wildcards.db == "unified proteome":
         df1 = pd.read_csv(norm_samplesheet, sep="\t")
         df = pd.concat([df, df1])
     # get path for sample
@@ -64,6 +64,33 @@ rule add_decoys_contams:
         mv {params.date}-decoys-contam-proteome.fasta.fas {output.proteome}
         """
 
+# add decoys and contaminants to unified proteome
+rule add_decoys_contams_unified_proteome:
+    input:
+        proteome = unified_proteome
+    output:
+        proteome = os.path.join(out_dir, "unified_proteome",
+            "decoys-contam-proteome.fasta.fas")
+    params:
+        philosopher="/fragpipe_bin/fragpipe-23.0/fragpipe-23.0/tools/Philosopher/philosopher-v5.1.1",
+        tmpdir=os.path.join(out_dir, "unified_proteome"),
+        date = datetime.today().strftime('%Y-%m-%d')
+    resources:
+        mem_mb = 100000,
+        time = 360, # increased for retries default 120
+    threads: 8,
+    container:
+        "/data1/shahs3/users/preskaa/singularity/fragpipe_23.0.sif"
+    shell:
+        """
+        cd {params.tmpdir} &&
+        {params.philosopher} workspace --init --nocheck &&
+        {params.philosopher} workspace --temp {params.tmpdir}
+        {params.philosopher} database --custom {input.proteome} --contam --contamprefix &&
+        {params.philosopher} workspace --clean --nocheck &&
+        mv {params.date}-decoys-contam-proteome.fasta.fas {output.proteome}
+        """
+
 rule create_workflow:
     input:
         database = os.path.join(out_dir,"{sample}","{db}",
@@ -98,16 +125,36 @@ rule swissprot_workflow:
     script:
         "../scripts/write_dia_workflow.py"
 
+# create unified proteome workflow
+rule unified_proteome_workflow:
+    input:
+        database = os.path.join(out_dir, "unified_proteome",
+            "decoys-contam-proteome.fasta.fas"),
+        workflow = "fragpipe_workflows/fragpipe23_trypsin_dia_speclib_quant.workflow"
+    output:
+        workflow = os.path.join(workflow_dir, "unified_proteome",
+            "trypsin_dia_speclib_quant.workflow")
+    resources:
+        mem_mb = 4000,
+        time = 10,
+    threads: 1,
+    container:
+        "docker://quay.io/preskaa/proteomics:v240915"
+    script:
+        "../scripts/write_dia_workflow.py"
 
 # run fragpipe with our custom docker image
 
 # fetch correct workflow
 def _fetch_workflow(wildcards):
-    if wildcards.db != "swissprot":
+    if wildcards.db != "swissprot" and wildcards.db != "unified_proteome":
         workflow = os.path.join(workflow_dir, "{db}",
             "{sample}.workflow")
-    else:
+    elif wildcards.db == "swissprot":
         workflow = os.path.join(workflow_dir, "swissprot",
+            "trypsin_dia_speclib_quant.workflow")
+    elif wildcards.db == "unified_proteome":
+        workflow = os.path.join(workflow_dir, "unified_proteome",
             "trypsin_dia_speclib_quant.workflow")
     return workflow
 rule run_fragpipe:
@@ -122,11 +169,11 @@ rule run_fragpipe:
             "protein.tsv"),
     params:
         outdir=os.path.join(out_dir,"{sample}","{db}"),
-        memory=45, # in GB
+        memory=95, # in GB
         tempdir =  os.path.join(out_dir,"{sample}",
             "{db}","temp"),
         config_tools = fragpipe_config_tools
-    threads: 4,
+    threads: 8,
     resources:
         mem_mb = 100000,
         time = 1440 # increased for retries default was 360
