@@ -13,9 +13,9 @@ reannotate:
   haplotypes: [1, 2]
   ref_gtf: /data1/shahs3/reference/ref-sarcoma/GRCh38/v45/gencode.v45.primary_assembly.annotation.gtf
   swissprot: /data1/shahs3/reference/ref-sarcoma/blast_databases/swissprot_human_250206/2025-02-06-reviewed-isoforms-UP000005640.fas
-# run fragpipe
+# run fragpipe against reannotated proteomes
 fragpipe:
-  activate: True
+  activate: False
 # path to fragpipe config tools which can't be dockerized
 fragpipe_config_tools: /home/preskaa/250624_fragpipe_config_tools
 # run against swissprot as well? provide a fasta file here where
@@ -24,11 +24,11 @@ fragpipe_config_tools: /home/preskaa/250624_fragpipe_config_tools
 swissprot:
   activate: False
   fasta: /data1/shahs3/reference/ref-sarcoma/swissprot/2024-09-06-decoys-reviewed-isoforms-contam-UP000005640.fas
-  normal_samplesheet: config/Frankfurt_normal_samples.tsv
 # run against a unified proteome for all samples
 # decoys and contaminants have NOT been added
 # also provide samplesheet with normal controls (CD34+ cells)
 unified_proteome:
   activate: True
-  fasta: /data1/shahs3/users/preskaa/AMLproteogenomics/data/APS028_AML_PG2_analysis/all_samples_merged/all_samples_merged.fasta
-  normal_samplesheet: config/Frankfurt_normal_samples.tsv
+  fasta: /data1/shahs3/users/preskaa/AMLproteogenomics/data/APS028_AML_PG2_analysis/all_samples_merged/filtered/merged_geq3samples.fasta
+## provide spreadsheet of normal samples (CD34+ cells) for swissprot and unified proteome searches
+normal_samplesheet: null

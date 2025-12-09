@@ -7,9 +7,10 @@ localrules: create_manifest, create_workflow
 
 def _get_diafilepath(wildcards):
     df = pd.read_csv(samplesheet,sep="\t")
-    if wildcards.db == "swissprot" or wildcards.db == "unified proteome":
-        df1 = pd.read_csv(norm_samplesheet, sep="\t")
-        df = pd.concat([df, df1])
+    if wildcards.db == "swissprot" or wildcards.db == "unified_proteome":
+        if norm_samplesheet is not None:
+            df1 = pd.read_csv(norm_samplesheet, sep="\t")
+            df = pd.concat([df, df1])
     # get path for sample
     temp = df[df["individual_id"] == wildcards.sample]
     directory = list(temp["directory"])[0]
@@ -83,10 +84,11 @@ rule add_decoys_contams_unified_proteome:
         "/data1/shahs3/users/preskaa/singularity/fragpipe_23.0.sif"
     shell:
         """
+        cp {input.proteome} {params.tmpdir}/proteome.fasta &&
         cd {params.tmpdir} &&
         {params.philosopher} workspace --init --nocheck &&
         {params.philosopher} workspace --temp {params.tmpdir}
-        {params.philosopher} database --custom {input.proteome} --contam --contamprefix &&
+        {params.philosopher} database --custom {params.tmpdir}/proteome.fasta --contam --contamprefix &&
         {params.philosopher} workspace --clean --nocheck &&
         mv {params.date}-decoys-contam-proteome.fasta.fas {output.proteome}
         """
@@ -144,7 +146,6 @@ rule unified_proteome_workflow:
         "../scripts/write_dia_workflow.py"
 
 # run fragpipe with our custom docker image
-
 # fetch correct workflow
 def _fetch_workflow(wildcards):
     if wildcards.db != "swissprot" and wildcards.db != "unified_proteome":
@@ -173,10 +174,10 @@ rule run_fragpipe:
         tempdir =  os.path.join(out_dir,"{sample}",
             "{db}","temp"),
         config_tools = fragpipe_config_tools
-    threads: 8,
+    threads: 4,
     resources:
-        mem_mb = 100000,
-        time = 1440 # increased for retries default was 360
+        mem_mb = 200000,
+        time = 360 # increased for retries default was 360
     container:
         "/data1/shahs3/users/preskaa/singularity/fragpipe_23.0.sif"
     script:
