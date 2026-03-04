@@ -1,12 +1,12 @@
 ### boiler plate config
-out_dir: /data1/shahs3/users/preskaa/AMLproteogenomics/data/APS028_AML_PG2_analysis/fragpipe23_reannotated_out
-workflow_dir: /data1/shahs3/users/preskaa/AMLproteogenomics/data/APS028_AML_PG2_analysis/fragpipe23_workflows
+out_dir: /data1/shahs3/users/preskaa/AMLproteogenomics/data/APS032_PG3_Frankfurt/test
+workflow_dir: /data1/shahs3/users/preskaa/AMLproteogenomics/data/APS032_PG3_Frankfurt/fragpipe23_workflows
 samplesheet: config/PG2_Frankfurt_AML_proteomics_clean.tsv
 # directories containing predicted proteomes from from PG2 permissive and restrictive runs
 PG2_dirs: ["/data1/kentsisa/AML_proteogenomics/PG2_restrictive/Proj_B-101-986",
           "/data1/kentsisa/AML_proteogenomics/PG2_permissive/Proj_B-101-985"]
 # choose which proteomegenerator search databases to search
-pg_dbs: ["unified_proteome"]
+pg_dbs: ["PG3_proteome"]
 # reannotate PG2 headers to UniProt style (need transcriptome gtfs to be available)
 # provide swissprot fasta without decoys and contams here for reannotation
 reannotate:
@@ -30,6 +30,6 @@ swissprot:
 # also provide samplesheet with normal controls (CD34+ cells)
 unified_proteome:
   activate: True
-  fasta: /data1/shahs3/users/preskaa/AMLproteogenomics/data/APS028_AML_PG2_analysis/all_samples_merged/filtered/merged_geq3samples.fasta
+  fasta: /data1/shahs3/isabl_data_lake/analyses/97/45/49745/results/proteome/NDR_DEFAULT/merge.proteome.fasta
 ## provide spreadsheet of normal samples (CD34+ cells) for swissprot and unified proteome searches
 normal_samplesheet: config/Frankfurt_normal_samples.tsv

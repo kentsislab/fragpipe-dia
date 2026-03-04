@@ -7,7 +7,7 @@
 #SBATCH --job-name=AML
 #SBATCH --mail-type=END,FAIL
 #SBATCH --mail-user=preskaa@mskcc.org
-#SBATCH --output=slurm%j_unified_proteome.out
+#SBATCH --output=slurm%j_PG3_fasta.out
 
 ### example slurm submission script ###
 

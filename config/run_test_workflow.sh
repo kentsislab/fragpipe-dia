@@ -2,7 +2,7 @@
 #SBATCH --partition=componc_cpu
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=1
-#SBATCH --time=72:00:00
+#SBATCH --time=24:00:00
 #SBATCH --mem=8GB
 #SBATCH --job-name=AML
 #SBATCH --mail-type=END,FAIL
