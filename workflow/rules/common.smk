@@ -20,10 +20,6 @@ def create_sample_list(samplesheet):
 
 # create sample list for outputs
 samples = create_sample_list(samplesheet)
-# remove samples with missing gtf files for now
-problem_samples = ["F66", "F29", "F21", "F35"]
-set_diff = set(samples)-set(problem_samples)
-samples = list(set_diff)
 
 # get outputs
 def get_output():

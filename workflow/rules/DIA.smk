@@ -15,7 +15,8 @@ def _get_diafilepath(wildcards):
     temp = df[df["individual_id"] == wildcards.sample]
     directory = list(temp["directory"])[0]
     DIA_file = list(temp["DIA_file"])[0]
-    _, DIA_file = DIA_file.split(" ")
+    if " " in DIA_file:
+        _, DIA_file = DIA_file.split(" ")
     return os.path.join(directory, DIA_file)
 
 # create manifest and a temp directory for fragpipe
